@@ -1,0 +1,8 @@
+<!-- colors.xml -->
+<resources>
+    <color name="red">#FF0000</color>
+    <color name="light_red">#FF8080</color>
+    <color name="lime_green">#8BC34A</color>
+    <color name="green">#4CAF50</color>
+
+</resources>

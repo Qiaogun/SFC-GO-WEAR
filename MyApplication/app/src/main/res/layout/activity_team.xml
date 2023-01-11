@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- activity_game_map.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="@dimen/inner_frame_layout_padding">
+    <!--    android:background="@drawable/button_bg"-->
+
+    <Button
+        android:id="@+id/button_green"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/green"
+        android:text="@string/green"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/button_red"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/red"
+        android:text="@string/red"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>
