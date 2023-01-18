@@ -5,9 +5,19 @@
     android:layout_height="match_parent"
     android:gravity="center">
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView"
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
+
+
+
+        <!-- other layout elements go here -->
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </LinearLayout>

@@ -1,0 +1,64 @@
+package com.sfc.myapplication;
+
+import android.os.Bundle;
+
+import androidx.fragment.app.FragmentActivity;
+
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.sfc.myapplication.databinding.ActivityFlagMapsBinding;
+
+public class FlagMaps extends FragmentActivity implements OnMapReadyCallback {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        com.sfc.myapplication.databinding.ActivityFlagMapsBinding binding = ActivityFlagMapsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        assert mapFragment != null;
+        mapFragment.getMapAsync(this);
+    }
+
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
+    private static final LatLng Mubuliding = new LatLng(35.38816829902916, 139.42723399013175);
+    private static final LatLng Tennis = new LatLng(35.386891, 139.429435);
+    private static final LatLng Kamoike = new LatLng(35.387112, 139.42727);
+    private static final LatLng Delta = new LatLng(35.38824956525928, 139.42541544170638);
+    private static final LatLng yukichi = new LatLng(35.38848434126174, 139.42701446346757);
+
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        // Add a marker in SFC and move the camera,
+
+        googleMap.addMarker(new MarkerOptions().position(Mubuliding).title("Mubuliding"));
+        googleMap.addMarker(new MarkerOptions().position(Tennis).title("Tennis"));
+        googleMap.addMarker(new MarkerOptions().position(Kamoike).title("Kamoike"));
+        googleMap.addMarker(new MarkerOptions().position(Delta).title("Delta"));
+        googleMap.addMarker(new MarkerOptions().position(yukichi).title("yukichi"));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(SFC));
+
+        CameraUpdate cUpdate = CameraUpdateFactory.newLatLngZoom(
+                Mubuliding, 14);
+        googleMap.moveCamera(cUpdate);
+    }
+}
