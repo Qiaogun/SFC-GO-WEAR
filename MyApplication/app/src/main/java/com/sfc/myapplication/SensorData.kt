@@ -23,6 +23,9 @@ class SensorData(activity: Activity) :SensorEventListener {
     private val pressure: Sensor by lazy {
         mSensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE)
     }//气压 有
+    private val heartRate: Sensor by lazy {
+        mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE)
+    }//气压 有
 
     private val mSensor: Sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
     private val channel = Channel<Pair<Int, FloatArray>>()
@@ -33,6 +36,7 @@ class SensorData(activity: Activity) :SensorEventListener {
         mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
         mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         mSensorManager.registerListener(this, pressure, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, heartRate, SensorManager.SENSOR_DELAY_NORMAL);
 
         job = CoroutineScope(Dispatchers.IO).launch {
             while (isActive) {
@@ -79,6 +83,17 @@ class SensorData(activity: Activity) :SensorEventListener {
             {val x: Float = event.values[0]
                 Log.d("onSensorChanged $type TYPE_STEP_COUNTER", "$x")}
 
+        else if(type == 21)//HeartRate
+        {val x : Float= event.values[0]
+            Log.d("onSensorChanged $type TYPE_HEART_RATE", "$x")}
+
+        else if(type == 5)//light
+        {val x: Float = event.values[0]
+            Log.d("onSensorChanged $type TYPE_LIGHT", "$x")}
+
+        else if(type == 69678)//tempr
+        {val x: Float = event.values[0]
+            Log.d("onSensorChanged $type TYPE_tem", "$x")}
 
         val data = event.values.clone()
         CoroutineScope(Dispatchers.IO).launch {
