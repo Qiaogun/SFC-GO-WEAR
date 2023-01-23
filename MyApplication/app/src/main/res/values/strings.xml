@@ -9,5 +9,6 @@
     <string name="red">red</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="title_activity_flag_maps">FlagMaps</string>
+    <string name="hint">hint</string>
 
 </resources>

@@ -10,7 +10,7 @@
 
     <Button
         android:id="@+id/button_green"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/green"
         android:text="@string/green"
@@ -18,10 +18,18 @@
 
     <Button
         android:id="@+id/button_red"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/red"
         android:text="@string/red"
         android:textColor="#FFFFFF" />
+
+    <EditText
+        android:id="@+id/username_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:freezesText="true"
+        android:hint="Enter your username" />
+
 
 </LinearLayout>

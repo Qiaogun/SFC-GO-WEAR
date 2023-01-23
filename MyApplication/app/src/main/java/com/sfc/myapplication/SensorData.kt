@@ -6,10 +6,12 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.os.Bundle
+import android.provider.Settings.Secure
 import android.util.Log
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
+
+
 
 class SensorData(activity: Activity) :SensorEventListener {
     private val mSensorManager: SensorManager by lazy {

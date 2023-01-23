@@ -23,7 +23,7 @@ public class MyAdapter extends ArrayAdapter<Button> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         Button btn = getItem(position);//得到当前项的 Fruit 实例
-        //为每一个子项加载设定的布局
+        //为每一个子项加载设定的布局v
         View view = LayoutInflater.from(getContext()).inflate(R.layout.main_btn, parent, false);
         //分别获取 image view 和 textview 的实例
         TextView btntext = view.findViewById(R.id.button);

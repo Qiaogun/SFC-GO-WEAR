@@ -3,21 +3,19 @@ package com.sfc.myapplication;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 
 
-
-
-    public class TeamSelect extends Activity {
+public class TeamSelect extends Activity {
         private Button mButton1;
         private Button mButton2;
 
 
         //SharedPreferences sharedPref = getSharedPreferences("button_state", MODE_PRIVATE);
         private int mSelectedButtonId = -1; // -1 indicates no button is selected
-
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +25,13 @@ import android.widget.Button;
 
             mButton1 = findViewById(R.id.button_green);
             mButton2 = findViewById(R.id.button_red);
+            EditText usernameInput = findViewById(R.id.username_input);
 
             SharedPreferences sharedPref = getSharedPreferences("button_state", MODE_PRIVATE);
             int selectedButtonId = sharedPref.getInt("selected_button_id", -1);
-
+            String savedUsername = sharedPref.getString("username","");
+            usernameInput.setText(savedUsername);
+            Log.d("MyTagsave", savedUsername);
             if (selectedButtonId == R.id.button_green) {
                 mButton1.setSelected(true);
                 mButton1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.lime_green)));
@@ -71,20 +72,33 @@ import android.widget.Button;
                 }
             });
         }
+        private void saveUsernameInput(){
+        EditText textContent = findViewById(R.id.username_input);
+        String content = textContent.getText().toString();
+        SharedPreferences sharedPref = getSharedPreferences("button_state", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("username", content);
+        Log.d("MyTag", content);
+        editor.apply();
+        }
         private void saveSelectedButtonId(int buttonId) {
             SharedPreferences sharedPref = getSharedPreferences("button_state", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putInt("selected_button_id", buttonId);
             editor.apply();
         }
-        @Override
+
+    @Override
         protected void onPause() {
             super.onPause();
             saveSelectedButtonId(mSelectedButtonId);
+            saveUsernameInput();
         }
         @Override
         protected void onStop() {
             super.onStop();
             saveSelectedButtonId(mSelectedButtonId);
+            saveUsernameInput();
         }
     }
+
