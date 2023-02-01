@@ -32,11 +32,11 @@ public class GPSService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        SharedPreferences sharedPref = getSharedPreferences("GPS_DATA", MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("MAIN_DATA", MODE_PRIVATE);
         SharedPreferences sharedPrefid = getSharedPreferences("button_state", MODE_PRIVATE);
         int selectedButtonId = sharedPrefid.getInt("selected_button_id", -1);
         String savedUsername = sharedPrefid.getString("username","");
-        String savedDeviceUUID = sharedPrefid.getString("deviceUUID","");
+        String savedDeviceUUID = sharedPref.getString("deviceUUID","");
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {

@@ -58,13 +58,13 @@ public class MainActivity extends FragmentActivity implements AmbientModeSupport
         Log.d("MyTag deviceUUID", deviceUUID);
 
 
-        SharedPreferences sharedPref = getSharedPreferences("GPS_DATA", MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("MAIN_DATA", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("deviceUUID", deviceUUID);
         Log.d("deviceUUID", deviceUUID);
         editor.apply();
-        String currlatitude = sharedPref.getString("latitude", "");
 
+        String currlatitude = sharedPref.getString("latitude", "");
         super.onCreate(savedInstanceState);
 
         ambientController = AmbientModeSupport.attach(this);
