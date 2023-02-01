@@ -1,28 +1,91 @@
 package com.sfc.myapplication;
 
-import android.app.Activity;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.wear.ambient.AmbientModeSupport;
+
 import java.util.List;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity implements AmbientModeSupport.AmbientCallbackProvider {
+
+    private AmbientModeSupport.AmbientController ambientController;
+    private static final int JOB_ID = 1001;
+    private JobScheduler jobScheduler;
+    private JobInfo jobInfo;
+    public String deviceUUID;
 
     @Override
+    public AmbientModeSupport.AmbientCallback getAmbientCallback() {
+        return new MyAmbientCallback();
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String deviceUUID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+//
+//        Executor executor = Executors.newSingleThreadExecutor();
+//        executor.execute(()->{
+//            while(true){
+//                // Do something in the background thread
+//                NetworkThread thread = new NetworkThread();
+//                thread.run();
+//                try {
+//                    Thread.sleep(50000);
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        });
+
+        WifiScanTask wifiScanTask = new WifiScanTask(getApplicationContext());
+        wifiScanTask.execute();
+
+        deviceUUID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         Log.d("MyTag deviceUUID", deviceUUID);
+
+
+        SharedPreferences sharedPref = getSharedPreferences("GPS_DATA", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("deviceUUID", deviceUUID);
+        Log.d("deviceUUID", deviceUUID);
+        editor.apply();
+        String currlatitude = sharedPref.getString("latitude", "");
+
         super.onCreate(savedInstanceState);
+
+        ambientController = AmbientModeSupport.attach(this);
         setContentView(R.layout.activity_main);
 
         Button button1 = findViewById(R.id.button_1);
+
+//        jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+//
+//        ComponentName componentName = new ComponentName(this, WifiScanService.class);
+//        Log.d("MyTag ", "WIFI3s");
+//        JobInfo.Builder builder = new JobInfo.Builder(JOB_ID, componentName);
+//        builder.setPeriodic(600000); //3s
+//        builder.setPersisted(true);
+//        builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY); // any network
+//        jobInfo = builder.build();
+
+//        Intent intent = new Intent(MainActivity.this, WifiScanService.class);
+//        startActivity(intent);
+
+
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -41,7 +104,7 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
-        Button button3= findViewById(R.id.button_3);
+        Button button3 = findViewById(R.id.button_3);
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,7 +114,7 @@ public class MainActivity extends Activity {
             }
 
         });
-        Button button4= findViewById(R.id.button_4);
+        Button button4 = findViewById(R.id.button_4);
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,7 +126,7 @@ public class MainActivity extends Activity {
                 }
             }
         });
-        Button button5= findViewById(R.id.button_5);
+        Button button5 = findViewById(R.id.button_5);
         button5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,6 +135,33 @@ public class MainActivity extends Activity {
                 sensorData = new SensorData(MainActivity.this);
             }
         });
+        Button button6 = findViewById(R.id.button_6);
+        button6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Launch ChildActivity6
+                Log.d("MyTag latitude", currlatitude);
+                Intent intent = new Intent(MainActivity.this, GPSService.class);
+                startService(intent);
+
+            }
+
+        });
+        Button button7 = findViewById(R.id.button_7);
+        button7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Launch ChildActivity7
+                Log.d("MyTag WiFi", currlatitude);
+//                Intent intent = new Intent(MainActivity.this, JobSchedulerService.class);
+//                startService(intent);
+
+            }
+
+        });
     }
 
+    ;
+
 }
+

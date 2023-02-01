@@ -14,6 +14,7 @@ import kotlinx.coroutines.channels.Channel
 
 
 class SensorData(activity: Activity) :SensorEventListener {
+
     private val mSensorManager: SensorManager by lazy {
         activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     }
@@ -136,44 +137,3 @@ class SensorData(activity: Activity) :SensorEventListener {
 
      */
 
-
-//
-//    private suspend fun sendSensorDataToServer(accelerometerData: SensorData, temperatureData: SensorData, pressureData: SensorData) {
-//        val json = """
-//            {
-//                "accelerometer": {
-//                    "x": ${accelerometerData.x},
-//                    "y": ${accelerometerData.y},
-//                    "z": ${accelerometerData.z}
-//                },
-//                "temperature": $temperatureData,
-//                "pressure": $pressureData
-//            }
-//        """
-//        val response = withContext(Dispatchers.IO) {
-//            val url = URL("ami.moe/api/get/sensor")
-//            val connection = url.openConnection() as HttpURLConnection
-//            connection.apply {
-//                requestMethod = "POST"
-//                setRequestProperty("Content-Type", "application/json")
-//                doOutput = true
-//            }
-//            connection.outputStream.use {
-//                it.write(json.toByteArray())
-//            }
-//            connection.inputStream.use {
-//                it.bufferedReader().readText()
-//            }
-//        }
-//        Log.d("MyActivity", "Server response: $response")
-//    }
-//
-//    private suspend fun updateUIFromServer() {
-//        val json = withContext(Dispatchers.IO) {
-//            val url = URL("ami.moe/api/flag")
-//            val connection = url.openConnection() as HttpURLConnection
-//            connection.inputStream.use {
-//                it.bufferedReader().readText()
-//            }
-//        }
-//        val

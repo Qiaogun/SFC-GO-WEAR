@@ -4,6 +4,8 @@ buildscript {
     dependencies {
         // 添加这一行依赖
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21'
+
+
     }
 }
 plugins {

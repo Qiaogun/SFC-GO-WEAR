@@ -50,18 +50,17 @@ public class FlagStatus extends Activity {
         listView=(ListView) findViewById(R.id.listView);
         //3、准备数据
         List<Flag> flaglist = new ArrayList<>();
-
-        String[] data={"テニスコート","Δ棟","諭吉像","スポーツグランド", "鴨池"};
-        for (int i = 0; i <2 ; i++) {
-            Flag pineapple=new Flag(R.drawable.placeholder,"テニスコート","¥0");
+        //String[] data={"テニスコート","Δ棟","諭吉像","スポーツグランド", "鴨池"};
+        for (int i = 0; i <1 ; i++) {
+            Flag pineapple=new Flag(R.drawable.placeholder,"テニスコート","");
             flaglist.add(pineapple);
-            Flag mango = new Flag(R.drawable.placeholder, "Δ棟","¥0");
+            Flag mango = new Flag(R.drawable.placeholder, "Δ棟","");
             flaglist.add(mango);
-            Flag pomegranate = new Flag(R.drawable.placeholder, "諭吉像","¥0");
+            Flag pomegranate = new Flag(R.drawable.placeholder, "諭吉像","");
             flaglist.add(pomegranate);
-            Flag grape = new Flag(R.drawable.placeholder, "スポーツグランド","¥0");
+            Flag grape = new Flag(R.drawable.placeholder, "スポーツグランド","");
             flaglist.add(grape);
-            Flag apple = new Flag(R.drawable.placeholder, "鴨池","¥0");
+            Flag apple = new Flag(R.drawable.placeholder, "鴨池","");
             flaglist.add(apple);
         }
 
