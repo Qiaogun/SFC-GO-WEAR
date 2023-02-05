@@ -16,7 +16,7 @@ public class TeamSelect extends Activity {
 
         //SharedPreferences sharedPref = getSharedPreferences("button_state", MODE_PRIVATE);
         private int mSelectedButtonId = -1; // -1 indicates no button is selected
-
+        private String mSelectedteam = ""; // "" indicates no button is selected
         @Override
         protected void onCreate(Bundle savedInstanceState) {
 
@@ -29,14 +29,17 @@ public class TeamSelect extends Activity {
 
             SharedPreferences sharedPref = getSharedPreferences("button_state", MODE_PRIVATE);
             int selectedButtonId = sharedPref.getInt("selected_button_id", -1);
+            String selectedteam = sharedPref.getString("selectedteam", "");
             String savedUsername = sharedPref.getString("username","");
             usernameInput.setText(savedUsername);
             Log.d("MyTagsave", savedUsername);
             if (selectedButtonId == R.id.button_green) {
                 mButton1.setSelected(true);
+                mSelectedteam ="Green";
                 mButton1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.lime_green)));
             } else if (selectedButtonId == R.id.button_red) {
                 mButton2.setSelected(true);
+                mSelectedteam ="Red";
                 mButton2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.light_red)));
             }
 
@@ -51,6 +54,7 @@ public class TeamSelect extends Activity {
                     mSelectedButtonId = R.id.button_green;
                     mButton1.setSelected(true);
                     mButton1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.lime_green)));
+                    mSelectedteam ="Green";
                     mButton2.setSelected(false);
                     mButton2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.red)));
                 }
@@ -68,6 +72,7 @@ public class TeamSelect extends Activity {
                     mButton2.setSelected(true);
                     mButton2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.light_red)));
                     mButton1.setSelected(false);
+                    mSelectedteam ="Red";
                     mButton1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.green)));
                 }
             });
@@ -78,6 +83,7 @@ public class TeamSelect extends Activity {
         SharedPreferences sharedPref = getSharedPreferences("button_state", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("username", content);
+        editor.putString("selectedteam", mSelectedteam);
         Log.d("MyTag", content);
         editor.apply();
         }
@@ -92,6 +98,7 @@ public class TeamSelect extends Activity {
         protected void onPause() {
             super.onPause();
             saveSelectedButtonId(mSelectedButtonId);
+
             saveUsernameInput();
         }
         @Override
