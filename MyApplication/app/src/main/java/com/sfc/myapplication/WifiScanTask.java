@@ -20,44 +20,53 @@ import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class WifiScanTask extends AsyncTask<Void, Void, Void> {
 
     private static Context context;
-
+    //private static List WiFiresjson;
     private static final String TAG = "WifiScanTask";
-    static class HttpTask extends AsyncTask<List<ScanResult>, Void, Void> {
 
-        ;
+
+
+    static class HttpTask extends AsyncTask<List<ScanResult>, Void, Void> {
 
         @Override
         protected Void doInBackground(List<ScanResult>... lists) {
-            SharedPreferences sharedPref = context.getSharedPreferences("button_state", MODE_PRIVATE);
-            int selectedButtonId = sharedPref.getInt("selected_button_id", -1);
-            String savedUsername = sharedPref.getString("username","");
-
+            SharedPreferences sharedPref = context.getSharedPreferences("MAIN_DATA", MODE_PRIVATE);
+            SharedPreferences sharedPrefid = context.getSharedPreferences("button_state", MODE_PRIVATE);
+            int selectedButtonId = sharedPrefid.getInt("selected_button_id", -1);
+            String savedUsername = sharedPrefid.getString("username","");
+            String selectedteam = sharedPrefid.getString("selectedteam","");
+            String savedDeviceUUID = sharedPref.getString("deviceUUID","");
+            ArrayList WiFiresjson = new ArrayList<String>();;
             HttpURLConnection conn = null;
             try {
                 Log.d(TAG, "doInBackground");
 
-                URL url = new URL("http://192.168.88.24:23333/");
+                URL url = new URL("http://192.168.88.24:23333/WiFi");
+                // URL url = new URL("http://43.206.213.194:23333/");
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
                 conn.setDoOutput(true);
                 conn.setUseCaches(false);
                 conn.setConnectTimeout(5000);
                 conn.setReadTimeout(5000);
-
                 // 发送data
                 StringWriter stringWriter = new StringWriter();
-                stringWriter.write(String.format("username: %s","selected_button_id: %d\n",savedUsername,selectedButtonId));
+                stringWriter.write(String.format("{\"DeviceUUID\": \"%s\", \"Username\": \"%s\", \"TeamType\": %s, \"WifiList\": ",savedDeviceUUID,savedUsername,selectedteam));
                 for (ScanResult result : lists[0]) {
                     if (result.level > -67) {
-                        Log.d(TAG, String.format("SSID: %s, BSSID: %s, level: %d", result.SSID, result.BSSID, result.level));
-                        stringWriter.write(String.format("\"SSID\": \"%s\", \"BSSID\": \"%s\", \"level\": %d\n", result.SSID, result.BSSID, result.level));
+                        //Log.d(TAG, String.format("\"SSID\": \"%s\", \"BSSID\": \"%s\", \"level\": %d ", result.SSID, result.BSSID, result.level));
+                        WiFiresjson.add(String.format("{"+"\"SSID\": \"%s\", \"BSSID\": \"%s\", \"Level\": %d }", result.SSID, result.BSSID, result.level));
                     }
                 }
+                String res= String.join(",",WiFiresjson);
+                Log.d(TAG,res);
+                stringWriter.write("["+res+"]}");
+
                 Log.d(TAG,stringWriter.toString());
                 byte[] data = stringWriter.toString().getBytes("utf-8");
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -85,14 +94,15 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
     }
 
 
-    private int interval = 5 * 1000; // 扫描间隔时间，单位为毫秒 90 * 1000 1，5min
+    private int interval = 30 * 1000; // 扫描间隔时间，单位为毫秒 90 * 1000 1，5min
     private boolean isRunning = true;
 
     private WifiManager wifiManager;
 
 
 
-    public WifiScanTask(Context context) {
+    public WifiScanTask(Context context)
+    {
 
         this.context = context;
 
