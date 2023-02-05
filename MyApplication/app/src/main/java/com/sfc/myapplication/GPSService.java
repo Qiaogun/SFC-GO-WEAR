@@ -34,7 +34,7 @@ public class GPSService extends Service {
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         SharedPreferences sharedPref = getSharedPreferences("MAIN_DATA", MODE_PRIVATE);
         SharedPreferences sharedPrefid = getSharedPreferences("button_state", MODE_PRIVATE);
-        int selectedButtonId = sharedPrefid.getInt("selected_button_id", -1);
+        String selectedteam = sharedPrefid.getString("selectedteam", "");
         String savedUsername = sharedPrefid.getString("username","");
         String savedDeviceUUID = sharedPref.getString("deviceUUID","");
         locationListener = new LocationListener() {
@@ -47,11 +47,11 @@ public class GPSService extends Service {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("latitude", String.valueOf(latitude));
                 editor.putString("longitude", String.valueOf(longitude));
-                Log.d("MyTag", String.valueOf(latitude) + longitude);
+                Log.d(TAG, String.valueOf(latitude) + longitude);
                 editor.apply();
                 HttpURLConnection conn = null;
                 try {
-                    URL url = new URL("http://192.168.88.24:23333/");
+                    URL url = new URL("http://192.168.88.24:23333/GPS");
                     conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
                     conn.setDoOutput(true);
@@ -61,8 +61,10 @@ public class GPSService extends Service {
                     Log.d("GPSService", "Latitude: " + latitude + ", Longitude: " +longitude);
                     // 发送data
                     StringWriter stringWriter = new StringWriter();
-                    stringWriter.write(String.format("\"deviceUUID\": \"%s\", \"username\": \"%s\", \"selected_button_id\": %d\n",savedDeviceUUID,savedUsername,selectedButtonId));
-                    stringWriter.write(String.format("\"latitude\": \"%s\", \"longitude\": \"%s\"\n",String.valueOf(latitude),String.valueOf(longitude)));
+                    stringWriter.write(String.format("{\"DeviceUUID\": \"%s\", \"Username\": \"%s\", \"TeamType\": \"%s\",",savedDeviceUUID,savedUsername,selectedteam));
+                    stringWriter.write(String.format("\"Latitude\": %s, \"Longitude\": %s}\n",String.valueOf(latitude),String.valueOf(longitude)));
+                    //stringWriter.write(String.format("\"Latitude\": %.7f, \"Longitude\": %.7f   }\n",latitude,longitude));
+
                     Log.d(TAG,stringWriter.toString());
                     byte[] data = stringWriter.toString().getBytes("utf-8");
                     conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -99,7 +101,8 @@ public class GPSService extends Service {
         if (ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return START_STICKY;
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 1, locationListener);
+        locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
         return START_STICKY;
     }
 
