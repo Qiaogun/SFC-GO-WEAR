@@ -81,8 +81,8 @@ class SensorData(activity: Activity) :SensorEventListener {
             Log.d("onSensorChanged $type TYPE_GRAVITY", "$x, $y, $z")
         }
         else if(type == 18)//TYPE_STEP_COUNTER
-            {val x: Float = event.values[0]
-                Log.d("onSensorChanged $type TYPE_STEP_COUNTER", "$x")}
+        {val x: Float = event.values[0]
+            Log.d("onSensorChanged $type TYPE_STEP_COUNTER", "$x")}
 
         else if(type == 21)//HeartRate
         {val x : Float= event.values[0]
