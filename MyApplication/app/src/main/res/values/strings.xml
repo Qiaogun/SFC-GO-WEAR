@@ -10,5 +10,7 @@
     <string name="title_activity_maps">MapsActivity</string>
     <string name="title_activity_flag_maps">FlagMaps</string>
     <string name="hint">hint</string>
+    <string name="title_activity_presentation._flag_ui">presentation.FlagUI</string>
+    <string name="title_activity_flag_ui">FlagUI</string>
 
 </resources>

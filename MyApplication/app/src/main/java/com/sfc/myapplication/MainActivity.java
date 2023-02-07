@@ -109,7 +109,7 @@ public class MainActivity extends FragmentActivity implements AmbientModeSupport
             @Override
             public void onClick(View view) {
                 // Launch ChildActivity3
-                Intent intent = new Intent(MainActivity.this, FlagStatus.class);
+                Intent intent = new Intent(MainActivity.this, FlagUI.class);
                 startActivity(intent);
             }
 

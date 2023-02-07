@@ -59,6 +59,10 @@
             android:name=".FlagMaps"
             android:exported="false"
             android:label="@string/title_activity_flag_maps" />
+        <activity
+            android:name=".FlagUI"
+            android:exported="false"
+            android:label="@string/title_activity_flag_ui" />
 
         <uses-library
             android:name="com.google.android.wearable"
