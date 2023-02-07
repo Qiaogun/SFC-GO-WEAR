@@ -73,7 +73,7 @@ class Point {
         this.green = green;
     }
 
-    public void setOffset(int offset) {
+    public void setOffset(double offset) {
         this.offset = offset;
     }
 }
