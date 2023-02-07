@@ -32,7 +32,7 @@ class Point {
     private String name;
     private int red;
     private int green;
-    private int offset;
+    private double offset;
 
     public String getName() {
         return name;
@@ -46,11 +46,11 @@ class Point {
         return green;
     }
 
-    public int getOffset() {
+    public double getOffset() {
         return offset;
     }
 
-    public int getStaus(){
+    public double getStaus(){
         if  (-5 < this.offset && this.offset < 5 && this.offset!=0){
                 return 1;
         } else if (this.offset == -5) {
@@ -129,7 +129,7 @@ public class FlagUI extends Activity {
                         point.setName(jsonObject.optString("name"));
                         point.setRed(jsonObject.optInt("red"));
                         point.setGreen(jsonObject.optInt("green"));
-                        point.setOffset(jsonObject.optInt("offset"));
+                        point.setOffset(jsonObject.optDouble("offset"));
                     }
                     pointData.getPoints().add(point);
                 }
