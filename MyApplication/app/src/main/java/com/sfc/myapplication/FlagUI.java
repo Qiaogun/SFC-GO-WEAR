@@ -90,6 +90,7 @@ public class FlagUI extends Activity {
         @Override
         public void run() {
             new GetDataTask().execute("http://192.168.88.24:23333/flagui");
+            new GetPonintTask().execute("http://192.168.88.24:23333/scorer");
             mHandler.postDelayed(mRunnable, 5000);
         }
     };
@@ -102,9 +103,46 @@ public class FlagUI extends Activity {
         pointView = findViewById(R.id.textView2);
     }
 
+    private class GetPonintTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            try {
+                URL url = new URL(params[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                int status = connection.getResponseCode();
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                StringBuilder content = new StringBuilder();
+                while ((inputLine = in.readLine()) != null) {
+                    content.append(inputLine);
+                }
+                in.close();
+                connection.disconnect();
+                System.out.println("Response: " + content.toString());
+                return content.toString();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String res) {
+            super.onPostExecute(res);
+            if (res != null) {
+                pointView.setText(res);
+            }
+        }
+    }
     private class GetDataTask extends AsyncTask<String, Void, PointData> {
+
         @Override
         protected PointData doInBackground(String... params) {
+
             try {
                 URL url = new URL(params[0]);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -151,6 +189,7 @@ public class FlagUI extends Activity {
 
         public void execute(String s) {
         }
+
     }
 
     private class MyAdapter extends BaseAdapter {
