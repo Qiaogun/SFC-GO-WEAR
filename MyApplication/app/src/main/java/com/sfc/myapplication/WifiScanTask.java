@@ -94,7 +94,7 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
     }
 
 
-    private int interval = 30 * 1000; // 扫描间隔时间，单位为毫秒 90 * 1000 1，5min
+    private int interval = 90 * 1000; // 扫描间隔时间，单位为毫秒 90 * 1000 1，5min
     private boolean isRunning = true;
 
     private WifiManager wifiManager;
