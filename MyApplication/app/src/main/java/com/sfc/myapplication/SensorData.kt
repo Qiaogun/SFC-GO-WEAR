@@ -48,7 +48,7 @@ class SensorData(activity: Activity) :SensorEventListener {
 //
 //                sendSensorDataToServer(accelerometerData, temperatureData, pressureData)
 //                updateUIFromServer()
-                delay(6_000)
+                delay(6000)
             }
         }
     }
