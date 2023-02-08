@@ -14,6 +14,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.time.Instant
 import java.time.format.DateTimeFormatter
+import kotlinx.coroutines.*
 
 
 
@@ -89,9 +90,9 @@ class SensorData(activity: Activity) :SensorEventListener {
             //Log.d("onSensorChanged $type ${event.sensor}", "$x, $y, $z")
             stringWriter.write(
                 kotlin.String.format(
-                    "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": \"%s\", \"y\": \"%s\", \"z\": \"%s\"}", "TYPE_ACCELEROMETER", formattedTimestamp, x, y, z)
+                    "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": %s, \"y\": %s, \"z\": %s}", "TYPE_ACCELEROMETER", formattedTimestamp, x, y, z)
             )
-            posttonet(stringWriter.toString())
+            jsonPost(stringWriter.toString())
             Log.d("onSensorChanged $type TYPE_ACCELEROMETER", "$x, $y, $z")
 
         }
@@ -99,9 +100,9 @@ class SensorData(activity: Activity) :SensorEventListener {
         {val x: Float = event.values[0]
             stringWriter.write(
                 kotlin.String.format(
-                    "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": \"%s\"}", "TYPE_PRESSURE", formattedTimestamp, "$x")
+                    "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": %s}", "TYPE_PRESSURE", formattedTimestamp, "$x")
             )
-            posttonet(stringWriter.toString())
+            jsonPost(stringWriter.toString())
             Log.d("onSensorChanged $type TYPE_PRESSURE", "$x")}
         else if (type == 9) //TYPE_GRAVITY
         {
@@ -112,34 +113,34 @@ class SensorData(activity: Activity) :SensorEventListener {
                 kotlin.String.format(
                     "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": \"%s\", \"y\": \"%s\", \"z\": \"%s\"}", "TYPE_GRAVITY", formattedTimestamp ,"$x, $y, $z")
             )
-            posttonet(stringWriter.toString())
+            jsonPost(stringWriter.toString())
             Log.d("onSensorChanged $type TYPE_GRAVITY", "$x, $y, $z")
         }
         else if(type == 18)//TYPE_STEP_COUNTER
         {val x: Float = event.values[0]
             stringWriter.write(
                 kotlin.String.format(
-                    "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": \"%s\"}", "TYPE_STEP_COUNTER",formattedTimestamp, x)
+                    "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": %s}", "TYPE_STEP_COUNTER",formattedTimestamp, x)
             )
-            posttonet(stringWriter.toString())
+            jsonPost(stringWriter.toString())
             Log.d("onSensorChanged $type TYPE_STEP_COUNTER", "$x")}
 
         else if(type == 21)//HeartRate
         {val x : Float= event.values[0]
             stringWriter.write(
                 kotlin.String.format(
-                    "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": \"%s\"}", "TYPE_HEART_RATE",formattedTimestamp, "$x")
+                    "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": %s}", "TYPE_HEART_RATE",formattedTimestamp, "$x")
             )
-            posttonet(stringWriter.toString())
+            jsonPost(stringWriter.toString())
             Log.d("onSensorChanged $type TYPE_HEART_RATE", "$x")}
 
         else if(type == 5)//light
         {val x: Float = event.values[0]
             stringWriter.write(
                 kotlin.String.format(
-                    "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": \"%s\"}", "TYPE_LIGHT", formattedTimestamp,"$x")
+                    "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": %s}", "TYPE_LIGHT", formattedTimestamp,"$x")
             )
-            posttonet(stringWriter.toString())
+            jsonPost(stringWriter.toString())
             Log.d("onSensorChanged $type TYPE_LIGHT", "$x")}
 
         else if(type == 69686)//tempr
@@ -188,6 +189,38 @@ class SensorData(activity: Activity) :SensorEventListener {
             if (conn != null) {
                 conn!!.disconnect()
             }
+        }
+    }
+    fun jsonPost(jsonBody: String) {
+        GlobalScope.launch(Dispatchers.Default) {
+
+            val url = URL("http://172.20.10.3:23333/")
+
+            val connection = url.openConnection() as HttpURLConnection
+            try {
+                connection.requestMethod = "POST"
+                connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded")
+                connection.doOutput = true
+                connection.connectTimeout = 5000
+                connection.readTimeout = 5000
+                connection.outputStream.bufferedWriter().use {
+                    it.write(jsonBody)
+                }
+                if (connection.responseCode == HttpURLConnection.HTTP_OK) {
+                    connection.inputStream.bufferedReader().use {
+                        println("Response: ${it.readText()}")
+                    }
+                }
+            }catch (  e:java.net.MalformedURLException)
+        {
+            //throw new RuntimeException(e);
+        }catch (  e:java.io.IOException)
+        {
+            //throw new RuntimeException(e);
+        }finally
+                {
+                    connection.disconnect()
+                }
         }
     }
 
