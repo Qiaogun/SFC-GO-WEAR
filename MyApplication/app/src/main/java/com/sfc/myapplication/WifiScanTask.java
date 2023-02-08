@@ -11,6 +11,7 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -31,10 +32,10 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
 
 
 
-    static class HttpTask extends AsyncTask<List<ScanResult>, Void, Void> {
+    static class HttpTask extends AsyncTask<List<ScanResult>, Void, Integer> {
 
         @Override
-        protected Void doInBackground(List<ScanResult>... lists) {
+        protected Integer doInBackground(List<ScanResult>... lists) {
             SharedPreferences sharedPref = context.getSharedPreferences("MAIN_DATA", MODE_PRIVATE);
             SharedPreferences sharedPrefid = context.getSharedPreferences("button_state", MODE_PRIVATE);
             int selectedButtonId = sharedPrefid.getInt("selected_button_id", -1);
@@ -46,7 +47,7 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
             try {
                 Log.d(TAG, "doInBackground");
 
-                URL url = new URL("http://192.168.88.24:23333/WiFi");
+                URL url = new URL("http://192.168.1.101:23333/WiFi");
                 // URL url = new URL("http://43.206.213.194:23333/");
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
@@ -76,9 +77,8 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
                 outputStream.write(data);
                 outputStream.close();
 
-                conn.getResponseCode();
-
                 Log.d(TAG, "send final");
+                return conn.getResponseCode();
             } catch (MalformedURLException e) {
                 //throw new RuntimeException(e);
 
@@ -90,6 +90,13 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
                 }
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+
+            Toast.makeText(context, String.valueOf(integer), Toast.LENGTH_SHORT).show();
         }
     }
 

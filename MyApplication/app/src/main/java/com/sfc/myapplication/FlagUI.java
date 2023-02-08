@@ -1,11 +1,14 @@
 package com.sfc.myapplication;
 
 import android.app.Activity;
+import android.app.AsyncNotedAppOp;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -81,16 +84,14 @@ class Point {
 
 public class FlagUI extends Activity {
 
-    ListView listView;
-    TextView pointView;
-    private ListView mListView;
-    private MyAdapter mAdapter;
-    private Handler mHandler = new Handler();
+    private ListView listView;
+    private TextView pointView;
+    private final Handler mHandler = new Handler();
     private Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
-            new GetDataTask().execute("http://192.168.88.24:23333/flagui");
-            new GetPonintTask().execute("http://192.168.88.24:23333/scorer");
+            new GetDataTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "http://192.168.1.102:23333/flagui");
+            //new GetPonintTask().execute("http://192.168.88.24:23333/scorer");
             mHandler.postDelayed(mRunnable, 5000);
         }
     };
@@ -101,6 +102,8 @@ public class FlagUI extends Activity {
         setContentView(R.layout.activity_flagui);
         listView = findViewById(R.id.listView);
         pointView = findViewById(R.id.textView2);
+
+        mHandler.postDelayed(mRunnable, 0);
     }
 
     private class GetPonintTask extends AsyncTask<String, Void, String> {
@@ -138,11 +141,9 @@ public class FlagUI extends Activity {
             }
         }
     }
-    private class GetDataTask extends AsyncTask<String, Void, PointData> {
-
+    private class GetDataTask extends AsyncTask<String, Void, List<Point>> {
         @Override
-        protected PointData doInBackground(String... params) {
-
+        protected List<Point> doInBackground(String... params) {
             try {
                 URL url = new URL(params[0]);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -159,9 +160,9 @@ public class FlagUI extends Activity {
                 }
                 String json = builder.toString();
                 JSONArray jsonArray = new JSONArray(json);
-                PointData pointData = new PointData();
-                Point point = new Point();
+                List<Point> points = new ArrayList<>();
                 for (int i = 0; i < jsonArray.length(); i++) {
+                    Point point = new Point();
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     if (jsonObject != null) {
                         point.setName(jsonObject.optString("name"));
@@ -169,9 +170,9 @@ public class FlagUI extends Activity {
                         point.setGreen(jsonObject.optInt("green"));
                         point.setOffset(jsonObject.optDouble("offset"));
                     }
-                    pointData.getPoints().add(point);
+                    points.add(point);
                 }
-                return pointData;
+                return points;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -179,15 +180,19 @@ public class FlagUI extends Activity {
         }
 
         @Override
-        protected void onPostExecute(PointData myModels) {
-            super.onPostExecute(myModels);
-            if (myModels != null) {
-                mAdapter.setData(myModels);
-                mAdapter.notifyDataSetChanged();
-            }
-        }
+        protected void onPostExecute(List<Point> points) {
+            super.onPostExecute(points);
+            if (points != null) {
+//                mAdapter.setData(myModels);
+//                mAdapter.notifyDataSetChanged();
 
-        public void execute(String s) {
+                List<String> array = new ArrayList<>();
+                for (Point p : points) {
+                    array.add(String.format("%s: red(%d) green(%d) offset(%f)", p.getName(), p.getRed(), p.getGreen(), p.getOffset()));
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(FlagUI.this, android.R.layout.simple_list_item_1, array);
+                listView.setAdapter(adapter);
+            }
         }
 
     }
@@ -199,12 +204,11 @@ public class FlagUI extends Activity {
             mData = data.getPoints();
             List<Point> flaglist = new ArrayList<>();
             for (Point flag:flaglist ) {
-                flag
 
             }
 
-            FlagAdapter adapter=new FlagAdapter(FlagStatus.this,R.layout.flag_item,flaglist);
-            listView.setAdapter(adapter);
+//            FlagAdapter adapter=new FlagAdapter(getApplicationContext(),R.layout.flag_item,flaglist);
+//            listView.setAdapter(adapter);
         }
 
         @Override
