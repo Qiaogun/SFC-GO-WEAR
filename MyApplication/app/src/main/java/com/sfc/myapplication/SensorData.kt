@@ -6,10 +6,14 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.provider.Settings.Secure
 import android.util.Log
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
+import java.io.StringWriter
+import java.net.HttpURLConnection
+import java.net.URL
+import java.time.Instant
+import java.time.format.DateTimeFormatter
 
 
 
@@ -61,44 +65,115 @@ class SensorData(activity: Activity) :SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent) {
         //
+        val currentTimestamp = Instant.now().toEpochMilli()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val formattedTimestamp = Instant.ofEpochMilli(currentTimestamp).atZone(java.time.ZoneId.systemDefault()).format(formatter)
+        //println(formattedTimestamp)
+        val stringWriter = StringWriter()
+        var postdata: String? = ""
         val type = event.sensor.type
         if (type == 1)//TYPE_ACCELEROMETER
         {   val x = event.values[0]
             val y = event.values[1]
             val z = event.values[2]
             //Log.d("onSensorChanged $type ${event.sensor}", "$x, $y, $z")
+            stringWriter.write(
+                kotlin.String.format(
+                    "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": \"%s\", \"y\": \"%s\", \"z\": \"%s\"}", "TYPE_ACCELEROMETER", formattedTimestamp, x, y, z)
+            )
+            posttonet(stringWriter.toString())
             Log.d("onSensorChanged $type TYPE_ACCELEROMETER", "$x, $y, $z")
 
         }
         else if(type == 6)//TYPE_PRESSURE
         {val x: Float = event.values[0]
+            stringWriter.write(
+                kotlin.String.format(
+                    "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": \"%s\"}", "TYPE_PRESSURE", formattedTimestamp, "$x")
+            )
+            posttonet(stringWriter.toString())
             Log.d("onSensorChanged $type TYPE_PRESSURE", "$x")}
         else if (type == 9) //TYPE_GRAVITY
         {
             val x = event.values[0]
             val y = event.values[1]
             val z = event.values[2]
+            stringWriter.write(
+                kotlin.String.format(
+                    "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": \"%s\", \"y\": \"%s\", \"z\": \"%s\"}", "TYPE_GRAVITY", formattedTimestamp ,"$x, $y, $z")
+            )
+            posttonet(stringWriter.toString())
             Log.d("onSensorChanged $type TYPE_GRAVITY", "$x, $y, $z")
         }
         else if(type == 18)//TYPE_STEP_COUNTER
         {val x: Float = event.values[0]
+            stringWriter.write(
+                kotlin.String.format(
+                    "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": \"%s\"}", "TYPE_STEP_COUNTER",formattedTimestamp, x)
+            )
+            posttonet(stringWriter.toString())
             Log.d("onSensorChanged $type TYPE_STEP_COUNTER", "$x")}
 
         else if(type == 21)//HeartRate
         {val x : Float= event.values[0]
+            stringWriter.write(
+                kotlin.String.format(
+                    "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": \"%s\"}", "TYPE_HEART_RATE",formattedTimestamp, "$x")
+            )
+            posttonet(stringWriter.toString())
             Log.d("onSensorChanged $type TYPE_HEART_RATE", "$x")}
 
         else if(type == 5)//light
         {val x: Float = event.values[0]
+            stringWriter.write(
+                kotlin.String.format(
+                    "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": \"%s\"}", "TYPE_LIGHT", formattedTimestamp,"$x")
+            )
+            posttonet(stringWriter.toString())
             Log.d("onSensorChanged $type TYPE_LIGHT", "$x")}
 
-        else if(type == 69678)//tempr
-        {val x: Float = event.values[0]
-            Log.d("onSensorChanged $type TYPE_tem", "$x")}
+//        else if(type == 69678)//tempr
+//        {val x: Float = event.values[0]
+//            Log.d("onSensorChanged $type TYPE_tem", "$x")}
 
         val data = event.values.clone()
         CoroutineScope(Dispatchers.IO).launch {
             channel.send(Pair<Int, FloatArray>(type, data))
+        }
+    }
+    fun posttonet(postdata : String){
+        var conn: HttpURLConnection? = null
+        try
+        {
+            Log.d("TYPE", "sensor")
+            //var URL url = new URL("http://192.168.88.24:23333/GPS");
+            val url = URL("http://172.20.10.3:23333/")
+            //val url = URL("http://43.206.213.194:23333/")
+            conn = url.openConnection() as HttpURLConnection
+            conn!!.requestMethod = "POST"
+            conn!!.doOutput = true
+            conn!!.useCaches = false
+            conn!!.connectTimeout = 5000
+            conn!!.readTimeout = 5000
+            // 发送data
+            val data = postdata.toByteArray(charset("utf-8"))
+            conn!!.setRequestProperty("Content-Type", "application/x-www-form-urlencoded")
+            conn!!.setRequestProperty("Content-Length", "" + data.size)
+            val outputStream = conn!!.outputStream
+            outputStream.write(data)
+            outputStream.close()
+            conn!!.responseCode
+        }catch (  e:java.net.MalformedURLException)
+        {
+            //throw new RuntimeException(e);
+        }catch (  e:java.io.IOException)
+        {
+            //throw new RuntimeException(e);
+        }finally
+        {
+            if (conn != null) {
+                conn!!.disconnect()
+            }
         }
     }
 
