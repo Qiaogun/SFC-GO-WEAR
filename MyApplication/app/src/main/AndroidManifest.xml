@@ -55,6 +55,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBH-x-SAVyTuFkZ-TikE8N723K0dEnxlUo" />
 
+
         <activity
             android:name=".FlagMaps"
             android:exported="false"
@@ -87,6 +88,7 @@
         <activity android:name=".TeamSelect" />
         <activity android:name=".FlagStatus" />
         <activity android:name=".SensorData" />
+        <activity android:name=".SensorDataHandler" />
     </application>
 
 </manifest>

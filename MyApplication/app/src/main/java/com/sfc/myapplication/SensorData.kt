@@ -92,7 +92,7 @@ class SensorData(activity: Activity) :SensorEventListener {
                 kotlin.String.format(
                     "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": %s, \"y\": %s, \"z\": %s}", "TYPE_ACCELEROMETER", formattedTimestamp, x, y, z)
             )
-            jsonPost(stringWriter.toString())
+            //jsonPost(stringWriter.toString())
             Log.d("onSensorChanged $type TYPE_ACCELEROMETER", "$x, $y, $z")
 
         }
@@ -102,7 +102,7 @@ class SensorData(activity: Activity) :SensorEventListener {
                 kotlin.String.format(
                     "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": %s}", "TYPE_PRESSURE", formattedTimestamp, "$x")
             )
-            jsonPost(stringWriter.toString())
+            //jsonPost(stringWriter.toString())
             Log.d("onSensorChanged $type TYPE_PRESSURE", "$x")}
         else if (type == 9) //TYPE_GRAVITY
         {
@@ -113,7 +113,7 @@ class SensorData(activity: Activity) :SensorEventListener {
                 kotlin.String.format(
                     "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": \"%s\", \"y\": \"%s\", \"z\": \"%s\"}", "TYPE_GRAVITY", formattedTimestamp ,"$x, $y, $z")
             )
-            jsonPost(stringWriter.toString())
+            //jsonPost(stringWriter.toString())
             Log.d("onSensorChanged $type TYPE_GRAVITY", "$x, $y, $z")
         }
         else if(type == 18)//TYPE_STEP_COUNTER
@@ -122,7 +122,7 @@ class SensorData(activity: Activity) :SensorEventListener {
                 kotlin.String.format(
                     "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": %s}", "TYPE_STEP_COUNTER",formattedTimestamp, x)
             )
-            jsonPost(stringWriter.toString())
+            //jsonPost(stringWriter.toString())
             Log.d("onSensorChanged $type TYPE_STEP_COUNTER", "$x")}
 
         else if(type == 21)//HeartRate
@@ -131,7 +131,7 @@ class SensorData(activity: Activity) :SensorEventListener {
                 kotlin.String.format(
                     "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": %s}", "TYPE_HEART_RATE",formattedTimestamp, "$x")
             )
-            jsonPost(stringWriter.toString())
+            //jsonPost(stringWriter.toString())
             Log.d("onSensorChanged $type TYPE_HEART_RATE", "$x")}
 
         else if(type == 5)//light
@@ -140,7 +140,7 @@ class SensorData(activity: Activity) :SensorEventListener {
                 kotlin.String.format(
                     "{\"TYPE\": \"%s\", \"Time\": \"%s\", \"x\": %s}", "TYPE_LIGHT", formattedTimestamp,"$x")
             )
-            jsonPost(stringWriter.toString())
+            //jsonPost(stringWriter.toString())
             Log.d("onSensorChanged $type TYPE_LIGHT", "$x")}
 
         else if(type == 69686)//tempr

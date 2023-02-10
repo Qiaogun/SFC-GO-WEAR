@@ -20,6 +20,7 @@ import androidx.wear.ambient.AmbientModeSupport;
 import java.util.List;
 
 public class MainActivity extends FragmentActivity implements AmbientModeSupport.AmbientCallbackProvider {
+    private SensorDataHandler mSensorDataHandler;
 
     private AmbientModeSupport.AmbientController ambientController;
     private static final int JOB_ID = 1001;
@@ -34,9 +35,11 @@ public class MainActivity extends FragmentActivity implements AmbientModeSupport
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
         StrictMode.setThreadPolicy(policy);
-//
+
+        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        mSensorDataHandler = new SensorDataHandler(sensorManager, getApplicationContext());
+        mSensorDataHandler.start();
 //        Executor executor = Executors.newSingleThreadExecutor();
 //        executor.execute(()->{
 //            while(true){
@@ -152,15 +155,24 @@ public class MainActivity extends FragmentActivity implements AmbientModeSupport
             @Override
             public void onClick(View view) {
                 // Launch ChildActivity7
-                Log.d("MyTag WiFi", currlatitude);
-//                Intent intent = new Intent(MainActivity.this, JobSchedulerService.class);
-//                startService(intent);
+                //Log.d("MyTag WiFi", currlatitude);
+                Intent intent = new Intent(MainActivity.this, SensorDataHandler.class);
+                startService(intent);
 
             }
 
         });
     }
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mSensorDataHandler.stop();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSensorDataHandler.start();
+    }
     ;
 
 }
