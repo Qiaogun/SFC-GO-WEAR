@@ -12,7 +12,7 @@
         android:id="@+id/button_green"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/green"
+        android:backgroundTint="@color/gary"
         android:text="@string/green"
         android:textColor="#FFFFFF" />
 
@@ -20,7 +20,7 @@
         android:id="@+id/button_red"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/red"
+        android:backgroundTint="@color/gary"
         android:text="@string/red"
         android:textColor="#FFFFFF" />
 

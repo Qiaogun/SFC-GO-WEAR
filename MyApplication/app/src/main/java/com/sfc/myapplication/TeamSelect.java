@@ -1,12 +1,14 @@
 package com.sfc.myapplication;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class TeamSelect extends Activity {
@@ -37,10 +39,12 @@ public class TeamSelect extends Activity {
                 mButton1.setSelected(true);
                 mSelectedteam ="Green";
                 mButton1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.lime_green)));
+                showToast("Green Team");
             } else if (selectedButtonId == R.id.button_red) {
                 mButton2.setSelected(true);
                 mSelectedteam ="Red";
                 mButton2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.light_red)));
+                showToast("Red Team");
             }
 
             mButton1.setOnClickListener(view -> {
@@ -48,15 +52,16 @@ public class TeamSelect extends Activity {
                     // If button 1 is already selected, reset to initial state
                     mSelectedButtonId = -1;
                     mButton1.setSelected(false);
-                    mButton1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.green)));
+                    mButton1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.gary)));
                 } else {
                     // Otherwise, select button 1 and unselect the other button
                     mSelectedButtonId = R.id.button_green;
                     mButton1.setSelected(true);
                     mButton1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.lime_green)));
                     mSelectedteam ="Green";
+                    showToast("Green Team set");
                     mButton2.setSelected(false);
-                    mButton2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+                    mButton2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.gary)));
                 }
             });
 
@@ -65,7 +70,7 @@ public class TeamSelect extends Activity {
                     // If button 2 is already selected, reset to initial state
                     mSelectedButtonId = -1;
                     mButton2.setSelected(false);
-                    mButton2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+                    mButton2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.gary)));
                 } else {
                     // Otherwise, select button 2 and unselect the other button
                     mSelectedButtonId = R.id.button_red;
@@ -73,7 +78,8 @@ public class TeamSelect extends Activity {
                     mButton2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.light_red)));
                     mButton1.setSelected(false);
                     mSelectedteam ="Red";
-                    mButton1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.green)));
+                    showToast("Red Team set");
+                    mButton1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.gary)));
                 }
             });
         }
@@ -93,6 +99,12 @@ public class TeamSelect extends Activity {
             editor.putInt("selected_button_id", buttonId);
             editor.apply();
         }
+    private void showToast(String message) {
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, message, duration);
+        toast.show();
+    }
 
     @Override
         protected void onPause() {

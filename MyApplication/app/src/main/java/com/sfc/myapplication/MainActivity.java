@@ -7,9 +7,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.Settings;
+import android.telephony.CarrierConfigManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,10 +25,9 @@ import java.util.List;
 public class MainActivity extends FragmentActivity implements AmbientModeSupport.AmbientCallbackProvider {
     private SensorDataHandler mSensorDataHandler;
 
+    private GPSDataHandler mLocationManager;
+
     private AmbientModeSupport.AmbientController ambientController;
-    private static final int JOB_ID = 1001;
-    private JobScheduler jobScheduler;
-    private JobInfo jobInfo;
     public String deviceUUID;
 
     @Override
@@ -36,6 +38,12 @@ public class MainActivity extends FragmentActivity implements AmbientModeSupport
     protected void onCreate(Bundle savedInstanceState) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+//        Intent intent = new Intent(MainActivity.this, GPSService.class);
+//        startService(intent);
+
+        LocationManager gpsManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        mLocationManager = new GPSDataHandler(gpsManager,getApplicationContext());
+        mLocationManager.start();
 
         SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mSensorDataHandler = new SensorDataHandler(sensorManager, getApplicationContext());
@@ -117,51 +125,39 @@ public class MainActivity extends FragmentActivity implements AmbientModeSupport
             }
 
         });
-        Button button4 = findViewById(R.id.button_4);
-        button4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Launch ChildActivity3
-                SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-                List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
-                for (Sensor sensor : sensorList) {
-                    Log.d("SENSOR", "Name: " + sensor.getName() + ", Type: " + sensor.getType());
-                }
-            }
-        });
-        Button button5 = findViewById(R.id.button_5);
-        button5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Launch ChildActivity5
-                SensorData sensorData;
-                sensorData = new SensorData(MainActivity.this);
-            }
-        });
-        Button button6 = findViewById(R.id.button_6);
-        button6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Launch ChildActivity6
-                Log.d("MyTag latitude", currlatitude);
-                Intent intent = new Intent(MainActivity.this, GPSService.class);
-                startService(intent);
-
-            }
-
-        });
-        Button button7 = findViewById(R.id.button_7);
-        button7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Launch ChildActivity7
-                //Log.d("MyTag WiFi", currlatitude);
-                Intent intent = new Intent(MainActivity.this, SensorDataHandler.class);
-                startService(intent);
-
-            }
-
-        });
+//        Button button4 = findViewById(R.id.button_4);
+//        button4.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // Launch ChildActivity3
+//                SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+//                List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
+//                for (Sensor sensor : sensorList) {
+//                    Log.d("SENSOR", "Name: " + sensor.getName() + ", Type: " + sensor.getType());
+//                }
+//            }
+//        });
+//        Button button5 = findViewById(R.id.button_5);
+//        button5.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // Launch ChildActivity5
+//                SensorData sensorData;
+//                sensorData = new SensorData(MainActivity.this);
+//            }
+//        });
+//        Button button6 = findViewById(R.id.button_6);
+//        button6.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // Launch ChildActivity6
+//                Log.d("MyTag latitude", currlatitude);
+//                Intent intent = new Intent(MainActivity.this, GPSService.class);
+//                startService(intent);
+//
+//            }
+//
+//        });
     }
     @Override
     protected void onPause() {

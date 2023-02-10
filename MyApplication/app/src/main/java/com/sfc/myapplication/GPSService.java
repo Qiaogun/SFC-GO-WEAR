@@ -47,7 +47,7 @@ public class GPSService extends Service {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("latitude", String.valueOf(latitude));
                 editor.putString("longitude", String.valueOf(longitude));
-                Log.d(TAG, String.valueOf(latitude) + longitude);
+                //Log.d(TAG, String.valueOf(latitude) + longitude);
                 editor.apply();
                 HttpURLConnection conn = null;
                 try {
@@ -58,7 +58,7 @@ public class GPSService extends Service {
                     conn.setUseCaches(false);
                     conn.setConnectTimeout(5000);
                     conn.setReadTimeout(5000);
-                    Log.d("GPSService", "Latitude: " + latitude + ", Longitude: " +longitude);
+                    //Log.d("GPSService", "Latitude: " + latitude + ", Longitude: " +longitude);
                     // 发送data
                     StringWriter stringWriter = new StringWriter();
                     stringWriter.write(String.format("{\"DeviceUUID\": \"%s\", \"Username\": \"%s\", \"TeamType\": \"%s\",",savedDeviceUUID,savedUsername,selectedteam));
@@ -76,7 +76,7 @@ public class GPSService extends Service {
 
                     conn.getResponseCode();
 
-                    Log.d(TAG, "send final");
+                    //Log.d(TAG, "send final");
                 } catch (MalformedURLException e) {
                     //throw new RuntimeException(e);
                 } catch (IOException e) {
@@ -102,7 +102,7 @@ public class GPSService extends Service {
             return START_STICKY;
         }
         locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
         return START_STICKY;
     }
 

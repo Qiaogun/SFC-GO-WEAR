@@ -8,7 +8,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-
+//废弃
 public class JobSchedulerService extends JobService {
     private static final String TAG = "JobSchedulerService";
     private static final int JOB_ID = 1;

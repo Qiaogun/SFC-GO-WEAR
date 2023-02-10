@@ -9,7 +9,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.PersistableBundle;
 import android.util.Log;
-
+//废弃
 public class JobSchedulerExample {
 
     private static final int JOB_ID = 1;

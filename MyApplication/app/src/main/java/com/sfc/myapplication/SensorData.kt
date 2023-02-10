@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter
 import kotlinx.coroutines.*
 
 
-
+//废弃
 class SensorData(activity: Activity) :SensorEventListener {
 
     private val mSensorManager: SensorManager by lazy {
@@ -70,7 +70,7 @@ class SensorData(activity: Activity) :SensorEventListener {
 
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        //TODO 在传感器精度发生改变时做些操作，accuracy为当前传感器精度
+        //在传感器精度发生改变时做些操作，accuracy为当前传感器精度
         //大部分传感器会返回三个轴方向x,y,x的event值，值的意义因传感器而异
     }
 
