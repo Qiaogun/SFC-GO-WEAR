@@ -52,15 +52,15 @@ public class FlagStatus extends Activity {
         List<Flag> flaglist = new ArrayList<>();
         //String[] data={"テニスコート","Δ棟","諭吉像","スポーツグランド", "鴨池"};
         for (int i = 0; i <1 ; i++) {
-            Flag pineapple=new Flag(R.drawable.placeholder,"テニスコート","");
+            Flag pineapple=new Flag(R.drawable.placeholder,"テニスコート",5);
             flaglist.add(pineapple);
-            Flag mango = new Flag(R.drawable.placeholder, "Δ棟","");
+            Flag mango = new Flag(R.drawable.placeholder, "Δ棟",-5);
             flaglist.add(mango);
-            Flag pomegranate = new Flag(R.drawable.placeholder, "諭吉像","");
+            Flag pomegranate = new Flag(R.drawable.placeholder, "諭吉像", (float) -1.2);
             flaglist.add(pomegranate);
-            Flag grape = new Flag(R.drawable.placeholder, "スポーツグランド","");
+            Flag grape = new Flag(R.drawable.placeholder, "スポーツグランド",-3);
             flaglist.add(grape);
-            Flag apple = new Flag(R.drawable.placeholder, "鴨池","");
+            Flag apple = new Flag(R.drawable.placeholder, "鴨池",3);
             flaglist.add(apple);
         }
 

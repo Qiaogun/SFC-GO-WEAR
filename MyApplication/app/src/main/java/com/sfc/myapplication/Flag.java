@@ -3,7 +3,7 @@ package com.sfc.myapplication;
 public class Flag {
     private int colorID;
     private String name;
-    private String falgsatus;
+    private float offset;
 
     public int getID() {
         return colorID;
@@ -11,12 +11,12 @@ public class Flag {
     public String getName() {
         return name;
     }
-    public String getFlagSatus() {
-        return falgsatus;
+    public float getOffset() {
+        return offset;
     }
-    public Flag(int colorID, String name, String falgSatus) {
+        public Flag(int colorID, String name, float offset) {
         this.colorID = colorID;
         this.name = name;
-        this.falgsatus = falgSatus;
+        this.offset = offset;
     }
 }

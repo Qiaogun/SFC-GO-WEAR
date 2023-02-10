@@ -184,39 +184,25 @@ public class FlagUI extends Activity {
         @Override
         protected void onPostExecute(List<Point> points) {
             super.onPostExecute(points);
+            List<Flag> basePoints = new ArrayList<>();
             if (points != null) {
                 List<String> array = new ArrayList<>();
                 for (Point p : points) {
-                    array.add(String.format("%s: \n" +
-                            "Red Team人数%d Green Team人数%d \n offset(%f)", p.getName(), p.getRed(), p.getGreen(), p.getOffset()));
+                    Flag base = new Flag(R.drawable.placeholder,p.getName(), (float) p.getOffset());
+                    basePoints.add(base);
+                    //BasePoints.add(new Flag(R.drawable.flag, p.getName(), String.format("Red Team人数%d Green Team人数%d \n offset(%f)", p.getRed(), p.getGreen(), p.getOffset())));
+                    //array.add(String.format("%s: \n" +
+                    //        "Red Team人数%d Green Team人数%d \n offset(%f)", p.getName(), p.getRed(), p.getGreen(), p.getOffset()));
                 }
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(FlagUI.this, android.R.layout.simple_list_item_1, array);
+                //ArrayAdapter<String> adapter = new ArrayAdapter<>(FlagUI.this, android.R.layout.simple_list_item_1, array);
+                FlagAdapter adapter=new FlagAdapter(FlagUI.this,R.layout.flag_item,basePoints);
                 listView.setAdapter(adapter);
                 mProgressBar.setVisibility(View.GONE);
             }
         }
 
     }
-    public class Flag {
-        private int colorID;
-        private String name;
-        private String falgsatus;
 
-        public int getID() {
-            return colorID;
-        }
-        public String getName() {
-            return name;
-        }
-        public String getFlagSatus() {
-            return falgsatus;
-        }
-        public Flag(int colorID, String name, String falgSatus) {
-            this.colorID = colorID;
-            this.name = name;
-            this.falgsatus = falgSatus;
-        }
-    }
     private class MyAdapter extends BaseAdapter {
         private List<Point> mData;
 

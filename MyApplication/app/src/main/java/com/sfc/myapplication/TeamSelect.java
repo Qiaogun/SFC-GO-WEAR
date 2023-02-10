@@ -41,7 +41,8 @@ public class TeamSelect extends Activity {
                 mSelectedteam ="Green";
                 mButton1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.lime_green)));
                 showToast("Green Team");
-            } else if (selectedteam == "Red") {
+            } 
+            if (selectedteam == "Red") {
                 mButton2.setSelected(true);
                 mSelectedteam ="Red";
                 mButton2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.light_red)));
@@ -49,10 +50,11 @@ public class TeamSelect extends Activity {
             }
 
             mButton1.setOnClickListener(view -> {
-                if (mSelectedButtonId == R.id.button_green) {
+                if (selectedteam == "Green") {
                     // If button 1 is already selected, reset to initial state
                     mSelectedButtonId = -1;
                     mButton1.setSelected(false);
+                    mSelectedteam = "";
                     mButton1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.gary)));
                 } else {
                     // Otherwise, select button 1 and unselect the other button
@@ -67,9 +69,10 @@ public class TeamSelect extends Activity {
             });
 
             mButton2.setOnClickListener(view -> {
-                if (mSelectedButtonId == R.id.button_red) {
+                if (selectedteam == "Red") {
                     // If button 2 is already selected, reset to initial state
                     mSelectedButtonId = -1;
+                    mSelectedteam ="";
                     mButton2.setSelected(false);
                     mButton2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.gary)));
                 } else {
@@ -104,7 +107,7 @@ public class TeamSelect extends Activity {
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, message, duration);
-        toast.setGravity(Gravity.BOTTOM, 0, 0);
+        toast.setGravity(Gravity.TOP, 0, 0);
         toast.show();
     }
 

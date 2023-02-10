@@ -1,12 +1,16 @@
 package com.sfc.myapplication;
 
 
+import static androidx.core.content.ContextCompat.getDrawable;
+
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,12 +34,24 @@ public class FlagAdapter extends ArrayAdapter<Flag> {
         //分别获取 image view 和 textview 的实例
         ImageView flagimage = view.findViewById(R.id.flag_image);
         TextView flagname = view.findViewById(R.id.flag_name);
-        TextView flagprice = view.findViewById(R.id.flag_price);
+        //TextView flagprice = view.findViewById(R.id.flag_price);
+        ProgressBar mProgressBar = view.findViewById(R.id.ProgressBar);
         // 设置要显示的图片和文字
         flagimage.setImageResource(flag.getID());
         flagname.setText(flag.getName());
-        flagprice.setText(flag.getFlagSatus());
+        mProgressBar.setVisibility(View.VISIBLE);
+        mProgressBar.setMax(200);  // Set the maximum progress value
+        if (flag.getOffset() == 0) {
+            mProgressBar.setProgress(100);
+            //mProgressBar.setSecondaryProgress(50);
+        }
+        else {
+
+            Log.d("flag.getOffset()", String.valueOf(flag.getOffset()));
+            mProgressBar.setProgress((int) (100+flag.getOffset() * 20));
+        }
         return view;
     }
 }
+
 
