@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -86,13 +87,14 @@ public class FlagUI extends Activity {
 
     private ListView listView;
     private TextView pointView;
+    private ProgressBar mProgressBar;
     private final Handler mHandler = new Handler();
     private Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
-            new GetDataTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "http://192.168.1.102:23333/flagui");
-            //new GetPonintTask().execute("http://192.168.88.24:23333/scorer");
-            mHandler.postDelayed(mRunnable, 5000);
+            new GetDataTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "http://192.168.88.11:23333/flagui");
+            new GetPonintTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"http://192.168.88.11:23333/scorer");
+            mHandler.postDelayed(mRunnable, 4000);
         }
     };
 
@@ -102,7 +104,9 @@ public class FlagUI extends Activity {
         setContentView(R.layout.activity_flagui);
         listView = findViewById(R.id.listView);
         pointView = findViewById(R.id.textView2);
-
+        mProgressBar = findViewById(R.id.progress_bar);
+        listView.setEmptyView(mProgressBar);
+        mProgressBar.setVisibility(View.VISIBLE);
         mHandler.postDelayed(mRunnable, 0);
     }
 
@@ -110,7 +114,6 @@ public class FlagUI extends Activity {
 
         @Override
         protected String doInBackground(String... params) {
-
             try {
                 URL url = new URL(params[0]);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -182,20 +185,38 @@ public class FlagUI extends Activity {
         protected void onPostExecute(List<Point> points) {
             super.onPostExecute(points);
             if (points != null) {
-//                mAdapter.setData(myModels);
-//                mAdapter.notifyDataSetChanged();
-
                 List<String> array = new ArrayList<>();
                 for (Point p : points) {
-                    array.add(String.format("%s: red(%d) green(%d) offset(%f)", p.getName(), p.getRed(), p.getGreen(), p.getOffset()));
+                    array.add(String.format("%s: \n" +
+                            "Red Team人数%d Green Team人数%d \n offset(%f)", p.getName(), p.getRed(), p.getGreen(), p.getOffset()));
                 }
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(FlagUI.this, android.R.layout.simple_list_item_1, array);
                 listView.setAdapter(adapter);
+                mProgressBar.setVisibility(View.GONE);
             }
         }
 
     }
+    public class Flag {
+        private int colorID;
+        private String name;
+        private String falgsatus;
 
+        public int getID() {
+            return colorID;
+        }
+        public String getName() {
+            return name;
+        }
+        public String getFlagSatus() {
+            return falgsatus;
+        }
+        public Flag(int colorID, String name, String falgSatus) {
+            this.colorID = colorID;
+            this.name = name;
+            this.falgsatus = falgSatus;
+        }
+    }
     private class MyAdapter extends BaseAdapter {
         private List<Point> mData;
 

@@ -38,7 +38,6 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
         protected Integer doInBackground(List<ScanResult>... lists) {
             SharedPreferences sharedPref = context.getSharedPreferences("MAIN_DATA", MODE_PRIVATE);
             SharedPreferences sharedPrefid = context.getSharedPreferences("button_state", MODE_PRIVATE);
-            int selectedButtonId = sharedPrefid.getInt("selected_button_id", -1);
             String savedUsername = sharedPrefid.getString("username","");
             String selectedteam = sharedPrefid.getString("selectedteam","");
             String savedDeviceUUID = sharedPref.getString("deviceUUID","");

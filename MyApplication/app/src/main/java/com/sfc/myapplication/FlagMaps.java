@@ -28,7 +28,7 @@ public class FlagMaps extends FragmentActivity implements OnMapReadyCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        com.sfc.myapplication.databinding.ActivityFlagMapsBinding binding = ActivityFlagMapsBinding.inflate(getLayoutInflater());
+        ActivityFlagMapsBinding binding = ActivityFlagMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,7 +18,7 @@ public class TeamSelect extends Activity {
 
 
         //SharedPreferences sharedPref = getSharedPreferences("button_state", MODE_PRIVATE);
-        private int mSelectedButtonId = -1; // -1 indicates no button is selected
+        private int mSelectedButtonId; // -1 indicates no button is selected
         private String mSelectedteam = ""; // "" indicates no button is selected
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +36,12 @@ public class TeamSelect extends Activity {
             String savedUsername = sharedPref.getString("username","");
             usernameInput.setText(savedUsername);
             Log.d("MyTagsave", savedUsername);
-            if (selectedButtonId == R.id.button_green) {
+            if (selectedteam == "Green") {
                 mButton1.setSelected(true);
                 mSelectedteam ="Green";
                 mButton1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.lime_green)));
                 showToast("Green Team");
-            } else if (selectedButtonId == R.id.button_red) {
+            } else if (selectedteam == "Red") {
                 mButton2.setSelected(true);
                 mSelectedteam ="Red";
                 mButton2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.light_red)));
@@ -103,6 +104,7 @@ public class TeamSelect extends Activity {
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, message, duration);
+        toast.setGravity(Gravity.BOTTOM, 0, 0);
         toast.show();
     }
 
@@ -110,7 +112,6 @@ public class TeamSelect extends Activity {
         protected void onPause() {
             super.onPause();
             saveSelectedButtonId(mSelectedButtonId);
-
             saveUsernameInput();
         }
         @Override

@@ -97,9 +97,9 @@ public class GPSDataHandler {
                     String response = writer.toString();
                     Log.d(TAG, response);
                 } catch (MalformedURLException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
             }
         });
