@@ -29,14 +29,14 @@ public class SensorDataHandler implements SensorEventListener {
     private Sensor mSensorLIGHT;
     private Sensor mSensorSKINTEMP;
     private ExecutorService executor;
+    String uuuid = "";
     private String url = "http://43.206.213.194:23333/sensor";
     public SensorDataHandler(SensorManager sensorManager,Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences("MAIN_DATA", MODE_PRIVATE);
-        SharedPreferences sharedPrefid = context.getSharedPreferences("button_state", MODE_PRIVATE);
-        int selectedButtonId = sharedPrefid.getInt("selected_button_id", -1);
+        SharedPreferences sharedPrefid = context.getSharedPreferences("button_state", MODE_PRIVATE);int selectedButtonId = sharedPrefid.getInt("selected_button_id", -1);
         String savedUsername = sharedPrefid.getString("username","");
-        String selectedteam = sharedPrefid.getString("selectedteam","");
         String savedDeviceUUID = sharedPref.getString("deviceUUID","");
+        uuuid  = String.format("{\"DeviceUUID\": \"%s\", \"Username\": \"%s\", ",savedDeviceUUID,savedUsername);
 
         mSensorManager = sensorManager;
         mSensorACC = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -87,24 +87,24 @@ public class SensorDataHandler implements SensorEventListener {
 
         if (event.sensor.getType()==1)
         {
-            stringWriter.write("{\"Accelerometer\": [\"x\": " + data[0] + ",\"y\": " + data[1] + ",\"z\": " + data[2]+"]}");
+            stringWriter.write(uuuid+"\"Accelerometer\": [\"x\": " + data[0] + ",\"y\": " + data[1] + ",\"z\": " + data[2]+"]}");
             //Log.d("MyTag", "Accelerometer data: " + data[0] + ", " + data[1] + ", " + data[2]);
         }
         if (event.sensor.getType()==6)
         {
-            stringWriter.write("{\"Pressure\": " + data[0]+"}");
+            stringWriter.write(uuuid+"\"Pressure\": " + data[0]+"}");
             //Log.d("MyTag", "Pressure data: " + data[0]);
         }
         if (event.sensor.getType()==21)
         {
-            stringWriter.write("{\"HeartRate\": " + data[0]+"}");
+            stringWriter.write(uuuid+"\"HeartRate\": " + data[0]+"}");
             //Log.d("MyTag", "Pressure data: " + data[0]);
         }
         if (event.sensor.getType()==5){
-            stringWriter.write("{\"Light\": " + data[0]+"}");
+            stringWriter.write(uuuid+"\"Light\": " + data[0]+"}");
         }
         if (event.sensor.getType()==69686){
-            stringWriter.write("{\"SkinTemp\": " + data[0]+"}");
+            stringWriter.write(uuuid+"\"SkinTemp\": " + data[0]+"}");
         }
         String res = stringWriter.toString();
     if (!executor.isShutdown() && !executor.isTerminated()) {
