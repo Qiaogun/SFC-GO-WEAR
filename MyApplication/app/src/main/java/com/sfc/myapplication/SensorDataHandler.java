@@ -17,6 +17,9 @@ import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -36,6 +39,7 @@ public class SensorDataHandler implements SensorEventListener {
         SharedPreferences sharedPrefid = context.getSharedPreferences("button_state", MODE_PRIVATE);int selectedButtonId = sharedPrefid.getInt("selected_button_id", -1);
         String savedUsername = sharedPrefid.getString("username","");
         String savedDeviceUUID = sharedPref.getString("deviceUUID","");
+
         uuuid  = String.format("{\"DeviceUUID\": \"%s\", \"Username\": \"%s\", ",savedDeviceUUID,savedUsername);
 
         mSensorManager = sensorManager;
@@ -82,29 +86,33 @@ public class SensorDataHandler implements SensorEventListener {
 
 @Override
     public void onSensorChanged(SensorEvent event) {
-        final float[] data = event.values.clone();
+    long currentTimestamp = Instant.now().toEpochMilli();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String formattedTimestamp = Instant.ofEpochMilli(currentTimestamp).atZone(ZoneId.systemDefault()).format(formatter);
+    String time = String.format("\"Timestamp\": \"%s\", ",formattedTimestamp);
+    final float[] data = event.values.clone();
         StringWriter stringWriter = new StringWriter();
 
         if (event.sensor.getType()==1)
         {
-            stringWriter.write(uuuid+"\"Accelerometer\": [\"x\": " + data[0] + ",\"y\": " + data[1] + ",\"z\": " + data[2]+"]}");
+            stringWriter.write(uuuid + time + "\"Accelerometer_x\": " + data[0] + ",\"Accelerometer_y\": " + data[1] + ",\"Accelerometer_z\": " + data[2]+"]}");
             //Log.d("MyTag", "Accelerometer data: " + data[0] + ", " + data[1] + ", " + data[2]);
         }
         if (event.sensor.getType()==6)
         {
-            stringWriter.write(uuuid+"\"Pressure\": " + data[0]+"}");
+            stringWriter.write(uuuid + time +"\"Pressure\": " + data[0]+"}");
             //Log.d("MyTag", "Pressure data: " + data[0]);
         }
         if (event.sensor.getType()==21)
         {
-            stringWriter.write(uuuid+"\"HeartRate\": " + data[0]+"}");
+            stringWriter.write(uuuid + time +"\"HeartRate\": " + data[0]+"}");
             //Log.d("MyTag", "Pressure data: " + data[0]);
         }
         if (event.sensor.getType()==5){
-            stringWriter.write(uuuid+"\"Light\": " + data[0]+"}");
+            stringWriter.write(uuuid + time +"\"Light\": " + data[0]+"}");
         }
         if (event.sensor.getType()==69686){
-            stringWriter.write(uuuid+"\"SkinTemp\": " + data[0]+"}");
+            stringWriter.write(uuuid + time +"\"SkinTemp\": " + data[0]+"}");
         }
         String res = stringWriter.toString();
     if (!executor.isShutdown() && !executor.isTerminated()) {
