@@ -125,7 +125,6 @@ public class FlagUI extends Activity {
                 }
                 in.close();
                 connection.disconnect();
-                System.out.println("Response: " + content.toString());
                 return content.toString();
             } catch (Exception e) {
                 e.printStackTrace();
