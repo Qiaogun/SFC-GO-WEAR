@@ -137,15 +137,14 @@ public class MainActivity extends FragmentActivity implements AmbientModeSupport
 //                }
 //            }
 //        });
-//        Button button5 = findViewById(R.id.button_5);
-//        button5.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // Launch ChildActivity5
-//                SensorData sensorData;
-//                sensorData = new SensorData(MainActivity.this);
-//            }
-//        });
+        Button button5 = findViewById(R.id.button_5);
+        button5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Launch ChildActivity5
+                finish();
+            }
+        });
 //        Button button6 = findViewById(R.id.button_6);
 //        button6.setOnClickListener(new View.OnClickListener() {
 //            @Override

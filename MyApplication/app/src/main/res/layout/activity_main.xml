@@ -49,11 +49,11 @@
 <!--                android:layout_width="match_parent"-->
 <!--                android:layout_height="wrap_content"-->
 <!--                android:text="Sensor" />-->
-<!--            <Button-->
-<!--                android:id="@+id/button_5"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="SensorData" />-->
+            <Button
+                android:id="@+id/button_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="End APP" />
 <!--            <Button-->
 <!--                android:id="@+id/button_6"-->
 <!--                android:layout_width="match_parent"-->
