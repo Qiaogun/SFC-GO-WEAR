@@ -29,7 +29,7 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
     private static Context context;
     //private static List WiFiresjson;
     private static final String TAG = "WifiScanTask";
-
+    Context mcontext;
 
 
     static class HttpTask extends AsyncTask<List<ScanResult>, Void, Integer> {
@@ -96,7 +96,7 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
 
-            Toast.makeText(context, String.valueOf(integer), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, String.valueOf(integer), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -112,7 +112,7 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
     {
 
         this.context = context;
-
+        mcontext  = context;
         wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 
         BroadcastReceiver wifiScanReceiver = new BroadcastReceiver() {
@@ -121,7 +121,8 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
                 boolean success = intent.getBooleanExtra(
                         WifiManager.EXTRA_RESULTS_UPDATED, false);
                 if (success) {
-                    Log.d(TAG, "Scan success");
+                    //Log.d(TAG, "Scan success");
+                    showToast("WiFi Scan success");
                     List<ScanResult> results = wifiManager.getScanResults();
 //                    for (ScanResult scanResult : results) {
 //                        if (scanResult.level > -67) {
@@ -136,7 +137,7 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
                         e.printStackTrace();
                     }
                 } else {
-                    Log.e(TAG, "Scan fail!!!");
+                    //Log.e(TAG, "Scan fail!!!");
                 }
             }
         };
@@ -164,27 +165,17 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+        
         //Toast.makeText(this, "WiFi扫描任务已结束", Toast.LENGTH_SHORT).show();
     }
-
-
-    @Nullable
-    private void scanWifi() {
-//        boolean success = mwifiManager.startScan();
-//        if (success) {
-//            Log.d(TAG, "Scan started successfully!");
-//            results = mwifiManager.getScanResults();
-//            for (ScanResult scanResult : results) {
-//                if (scanResult.level > -67) {
-//                    Log.d(TAG, "SSID: " + scanResult.SSID + " BSSID: " + scanResult.BSSID + " level: " + scanResult.level);
-//                }
-//            }
-//        } else {
-//            Log.d(TAG, "Scan start failed!");
-//        }
-
-
+    private void showToast(String message) {
+        Context context = mcontext;
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, message, duration);
+        toast.show();
     }
+
+
 
     private void scanWiFi() {
         Log.d(TAG, "startScan");
