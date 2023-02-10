@@ -11,6 +11,7 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -171,6 +172,7 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
         Context context = mcontext;
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, message, duration);
+        toast.setGravity(Gravity.TOP, 0, 0);
         toast.show();
     }
 

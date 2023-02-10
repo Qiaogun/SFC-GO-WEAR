@@ -13,6 +13,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -53,6 +54,7 @@ public class GPSDataHandler {
         Context context = mContext;
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, message, duration);
+        toast.setGravity(Gravity.TOP, 0, 0);
         toast.show();
     }
     public void start() {
