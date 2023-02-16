@@ -92,8 +92,8 @@ public class FlagUI extends Activity {
     private Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
-            new GetDataTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "http://192.168.88.11:23333/flagui");
-            new GetPonintTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"http://192.168.88.11:23333/scorer");
+            new GetDataTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "http://43.206.213.194:23333/flagui");
+            new GetPonintTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"http://43.206.213.194:23333/scorer");
             mHandler.postDelayed(mRunnable, 4000);
         }
     };

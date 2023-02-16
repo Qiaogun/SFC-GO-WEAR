@@ -62,8 +62,8 @@ public class GPSDataHandler {
 
             @Override
             public void onLocationChanged(Location location) {
-                showToast("GPS Updated");
                 sendGPSData(location);
+                showToast("GPS Updated");
             }};
         if (ActivityCompat.checkSelfPermission(mContext, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
              showToast("No permission");
@@ -77,12 +77,11 @@ public class GPSDataHandler {
 
     public void sendGPSData(Location location) {
         String data = String.format("{\"DeviceUUID\": \"%s\", \"Username\": \"%s\", \"Latitude\": %s, \"Longitude\": %s, \"Altitude\": \"%s\", \"Accuracy\": \"%s\", \"Speed\": \"%s\", \"Bearing\": \"%s\"}", savedDeviceUUID,savedUsername, location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getAccuracy(), location.getSpeed(), location.getBearing());
-        Log.d(TAG, data);
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    URL url = new URL("http://43.206.213.194:23333/gps");
+                    URL url = new URL("http://43.206.213.194:23333/GPS");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("POST");
                     connection.setDoOutput(true);
