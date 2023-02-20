@@ -81,7 +81,7 @@ public class FuseDataHandler {
                             dateString = dateFormat.format(date);
                             mLocation = location;
                             sendGPSData(location);
-                            showToast("success"+mLocation.getLatitude()+mLocation.getLongitude());
+                            //showToast("success"+mLocation.getLatitude()+mLocation.getLongitude());
 
                         }
                     }

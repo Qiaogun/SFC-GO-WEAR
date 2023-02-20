@@ -19,7 +19,7 @@ public class TeamSelect extends Activity {
 
         //SharedPreferences sharedPref = getSharedPreferences("button_state", MODE_PRIVATE);
         private int mSelectedButtonId; // -1 indicates no button is selected
-        private String mSelectedteam = ""; // "" indicates no button is selected
+        private String mSelectedteam; // "" indicates no button is selected
         @Override
         protected void onCreate(Bundle savedInstanceState) {
 
@@ -42,7 +42,7 @@ public class TeamSelect extends Activity {
                 mButton1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.lime_green)));
                 showToast("Green Team");
             } 
-            if (selectedteam == "Red") {
+            else if (selectedteam == "Red") {
                 mButton2.setSelected(true);
                 mSelectedteam ="Red";
                 mButton2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.light_red)));
