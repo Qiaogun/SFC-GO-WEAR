@@ -8,10 +8,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
@@ -34,6 +32,9 @@ public class SensorDataHandler implements SensorEventListener {
     private ExecutorService executor;
     String uuuid = "";
     private String url = "http://43.206.213.194:23333/sensor";
+    //private String url = "http://192.168.88.24:23333/sensor";
+
+
     public SensorDataHandler(SensorManager sensorManager,Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences("MAIN_DATA", MODE_PRIVATE);
         SharedPreferences sharedPrefid = context.getSharedPreferences("button_state", MODE_PRIVATE);int selectedButtonId = sharedPrefid.getInt("selected_button_id", -1);

@@ -1,14 +1,11 @@
 package com.sfc.myapplication;
 
 import android.app.Activity;
-import android.app.AsyncNotedAppOp;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -92,8 +89,13 @@ public class FlagUI extends Activity {
     private Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
-            new GetDataTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "http://43.206.213.194:23333/flagui");
-            new GetPonintTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"http://43.206.213.194:23333/scorer");
+
+//            new GetDataTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "http://43.206.213.194:23333/flagui");
+//            new GetPonintTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"http://43.206.213.194:23333/scorer");
+
+            new GetDataTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "http://192.168.88.24:23333/flagui");
+            new GetPonintTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"http://192.168.88.24:23333/scorer");
+
             mHandler.postDelayed(mRunnable, 4000);
         }
     };

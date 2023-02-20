@@ -1,37 +1,29 @@
 package com.sfc.myapplication;
 
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.core.app.ActivityCompat;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -127,7 +119,7 @@ public class FuseDataHandler {
             public void run() {
                 try {
 //                    URL url = new URL("http://43.206.213.194:23333/GPS");
-                    URL url = new URL("http://192.168.88.11:23333/GPS");
+                    URL url = new URL("http://192.168.88.24:23333/GPS");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("POST");
                     connection.setDoOutput(true);
@@ -139,10 +131,10 @@ public class FuseDataHandler {
                     os.flush();
                     os.close();
                     InputStream is = connection.getInputStream();
-                    StringWriter writer = new StringWriter();
-                    //IOUtils.copy(is, writer, "UTF-8");
-                    String response = writer.toString();
-                    Log.d(TAG, response);
+//                    StringWriter writer = new StringWriter();
+//                    //IOUtils.copy(is, writer, "UTF-8");
+//                    String response = writer.toString();
+//                    Log.d(TAG, response);
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {

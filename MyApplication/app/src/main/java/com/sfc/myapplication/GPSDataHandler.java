@@ -3,8 +3,6 @@ package com.sfc.myapplication;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.Context.MODE_PRIVATE;
 
-import static androidx.core.app.ServiceCompat.START_STICKY;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -18,12 +16,8 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
-import com.google.android.gms.common.util.IOUtils;
-
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -39,13 +33,10 @@ public class GPSDataHandler {
     private Context mContext;
     private String savedDeviceUUID;
     private String savedUsername;
+    private String selectedteam;
     public GPSDataHandler(LocationManager locationManager, Context context) {
         mContext = context;
-        SharedPreferences sharedPref = context.getSharedPreferences("MAIN_DATA", MODE_PRIVATE);
-        SharedPreferences sharedPrefid = context.getSharedPreferences("button_state", MODE_PRIVATE);
-        int selectedButtonId = sharedPrefid.getInt("selected_button_id", -1);
-        savedUsername = sharedPrefid.getString("username", "");
-        savedDeviceUUID = sharedPref.getString("deviceUUID", "");
+
         this.mlocationManager = locationManager;
         this.mContext = context;
         executor = Executors.newFixedThreadPool(1);
@@ -76,31 +67,45 @@ public class GPSDataHandler {
     }
 
     public void sendGPSData(Location location) {
-        String data = String.format("{\"DeviceUUID\": \"%s\", \"Username\": \"%s\", \"Latitude\": %s, \"Longitude\": %s, \"Altitude\": \"%s\", \"Accuracy\": \"%s\", \"Speed\": \"%s\", \"Bearing\": \"%s\"}", savedDeviceUUID,savedUsername, location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getAccuracy(), location.getSpeed(), location.getBearing());
+
+        SharedPreferences sharedPref = mContext.getSharedPreferences("MAIN_DATA", MODE_PRIVATE);
+        SharedPreferences sharedPrefid = mContext.getSharedPreferences("button_state", MODE_PRIVATE);
+        int selectedButtonId = sharedPrefid.getInt("selected_button_id", -1);
+        savedUsername = sharedPrefid.getString("username", "");
+        savedDeviceUUID = sharedPref.getString("deviceUUID", "");
+        selectedteam = sharedPrefid.getString("selectedteam", "");
+        String data = String.format("{\"DeviceUUID\": \"%s\", \"Username\": \"%s\", \"TeamType\":\"%s\", \"Latitude\": %s, \"Longitude\": %s, \"Altitude\": \"%s\", \"Accuracy\": \"%s\", \"Speed\": \"%s\", \"Bearing\": \"%s\"}", savedDeviceUUID,savedUsername,selectedteam, location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getAccuracy(), location.getSpeed(), location.getBearing());
+        Log.d(TAG, data);
+
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
+
                     URL url = new URL("http://43.206.213.194:23333/GPS");
+                    //URL url = new URL("http://192.168.88.24:23333/GPS");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("POST");
                     connection.setDoOutput(true);
                     connection.setDoInput(true);
+                    connection.setConnectTimeout(5000);
+                    connection.setReadTimeout(5000);
                     connection.setRequestProperty("Content-Type", "application/json");
                     connection.setRequestProperty("Accept", "application/json");
                     OutputStream os = connection.getOutputStream();
                     os.write(data.getBytes());
                     os.flush();
                     os.close();
-                    InputStream is = connection.getInputStream();
-                    StringWriter writer = new StringWriter();
-                    //IOUtils.copy(is, writer, "UTF-8");
-                    String response = writer.toString();
-                    Log.d(TAG, response);
+//                    InputStream is = connection.getInputStream();
+//                    StringWriter writer = new StringWriter();
+//                   IOUtils.copy(is, writer, "UTF-8");
+//                    String response = writer.toString();
+//
+//                    Log.d(TAG, "12"+response);
                 } catch (MalformedURLException e) {
-                    //e.printStackTrace();
+                    e.printStackTrace();
                 } catch (IOException e) {
-                    //e.printStackTrace();
+                    e.printStackTrace();
                 }
             }
         });

@@ -47,8 +47,8 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
             try {
                 Log.d(TAG, "doInBackground");
 
-                URL url = new URL("http://192.168.1.101:23333/WiFi");
-                // URL url = new URL("http://43.206.213.194:23333/");
+                URL url = new URL("http://192.168.88.24:23333/WiFi");
+                // URL url = new URL("http://43.206.213.194:23333/WiFi");
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
                 conn.setDoOutput(true);

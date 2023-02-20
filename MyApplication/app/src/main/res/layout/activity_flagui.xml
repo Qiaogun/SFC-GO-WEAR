@@ -4,12 +4,13 @@
         android:orientation="vertical"
         android:gravity="center"
         android:padding="@dimen/inner_frame_layout_padding">
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="179dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center"
-        android:gravity="center" />
+
+     <ListView
+         android:id="@+id/listView"
+         android:layout_width="203dp"
+         android:layout_height="150dp"
+         android:layout_gravity="center"
+         android:gravity="center" />
 
      <ProgressBar
          android:id="@+id/progress_bar"
@@ -23,7 +24,7 @@
         android:text="Red  0 - 0 Green"
         android:layout_gravity="center"
         android:gravity="center"
-        android:textSize="20sp"
+        android:textSize="10dp"
         android:textColor="#FFFFFF"
         android:backgroundTint="#000000" />
 
