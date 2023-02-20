@@ -20,13 +20,17 @@ import android.widget.Button;
 import androidx.fragment.app.FragmentActivity;
 import androidx.wear.ambient.AmbientModeSupport;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+
 import java.util.List;
 
 public class MainActivity extends FragmentActivity implements AmbientModeSupport.AmbientCallbackProvider {
     private SensorDataHandler mSensorDataHandler;
 
+    private FusedLocationProviderClient fusedLocationProviderClient;
     private GPSDataHandler mLocationManager;
-
+    private FuseDataHandler mFuseDataHandler;
     private AmbientModeSupport.AmbientController ambientController;
     public String deviceUUID;
 
@@ -40,10 +44,13 @@ public class MainActivity extends FragmentActivity implements AmbientModeSupport
         StrictMode.setThreadPolicy(policy);
 //        Intent intent = new Intent(MainActivity.this, GPSService.class);
 //        startService(intent);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        mFuseDataHandler = new FuseDataHandler(fusedLocationProviderClient,getApplicationContext());
+        mFuseDataHandler.start();
 
-        LocationManager gpsManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        mLocationManager = new GPSDataHandler(gpsManager,getApplicationContext());
-        mLocationManager.start();
+//        LocationManager gpsManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//        mLocationManager = new GPSDataHandler(gpsManager,getApplicationContext());
+//        mLocationManager.start();
 
         SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mSensorDataHandler = new SensorDataHandler(sensorManager, getApplicationContext());

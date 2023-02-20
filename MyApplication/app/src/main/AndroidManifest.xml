@@ -84,6 +84,7 @@
         <activity android:name=".FlagStatus" />
         <activity android:name=".SensorData" />
         <activity android:name=".SensorDataHandler" />
+        <activity android:name=".FuseDataHandler" />
     </application>
 
 </manifest>
