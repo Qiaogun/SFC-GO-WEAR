@@ -39,13 +39,16 @@ public class GPSDataHandler {
     private Context mContext;
     private String savedDeviceUUID;
     private String savedUsername;
+    private String savedTeam;
     public GPSDataHandler(LocationManager locationManager, Context context) {
         mContext = context;
         SharedPreferences sharedPref = context.getSharedPreferences("MAIN_DATA", MODE_PRIVATE);
         SharedPreferences sharedPrefid = context.getSharedPreferences("button_state", MODE_PRIVATE);
         int selectedButtonId = sharedPrefid.getInt("selected_button_id", -1);
+        savedTeam = sharedPrefid.getString("selectedteam", "");
         savedUsername = sharedPrefid.getString("username", "");
         savedDeviceUUID = sharedPref.getString("deviceUUID", "");
+
         this.mlocationManager = locationManager;
         this.mContext = context;
         executor = Executors.newFixedThreadPool(1);
@@ -76,7 +79,7 @@ public class GPSDataHandler {
     }
 
     public void sendGPSData(Location location) {
-        String data = String.format("{\"DeviceUUID\": \"%s\", \"Username\": \"%s\", \"Latitude\": %s, \"Longitude\": %s, \"Altitude\": \"%s\", \"Accuracy\": \"%s\", \"Speed\": \"%s\", \"Bearing\": \"%s\"}", savedDeviceUUID,savedUsername, location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getAccuracy(), location.getSpeed(), location.getBearing());
+        String data = String.format("{\"DeviceUUID\": \"%s\", \"Username\": \"%s\",\"TeamType\": \"%s\", \"Latitude\": %s, \"Longitude\": %s, \"Altitude\": \"%s\", \"Accuracy\": \"%s\", \"Speed\": \"%s\", \"Bearing\": \"%s\"}", savedDeviceUUID,savedUsername,savedTeam, location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getAccuracy(), location.getSpeed(), location.getBearing());
         executor.execute(new Runnable() {
             @Override
             public void run() {
@@ -93,10 +96,10 @@ public class GPSDataHandler {
                     os.flush();
                     os.close();
                     InputStream is = connection.getInputStream();
-                    StringWriter writer = new StringWriter();
-                    //IOUtils.copy(is, writer, "UTF-8");
-                    String response = writer.toString();
-                    Log.d(TAG, response);
+//                    StringWriter writer = new StringWriter();
+//                    //IOUtils.copy(is, writer, "UTF-8");
+//                    String response = writer.toString();
+//                    Log.d(TAG, response);
                 } catch (MalformedURLException e) {
                     //e.printStackTrace();
                 } catch (IOException e) {
