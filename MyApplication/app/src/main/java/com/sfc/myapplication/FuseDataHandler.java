@@ -35,6 +35,9 @@ import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -47,6 +50,8 @@ public class FuseDataHandler {
     private Context mContext;
     private String savedDeviceUUID;
     private String savedUsername;
+    private String savedTeam;
+    private String dateString;
     private FusedLocationProviderClient mfusedLocationClient;
 
     public FuseDataHandler(FusedLocationProviderClient fusedLocationProviderClient,Context context) {
@@ -55,10 +60,11 @@ public class FuseDataHandler {
         SharedPreferences sharedPref = context.getSharedPreferences("MAIN_DATA", MODE_PRIVATE);
         SharedPreferences sharedPrefid = context.getSharedPreferences("button_state", MODE_PRIVATE);
         int selectedButtonId = sharedPrefid.getInt("selected_button_id", -1);
+        savedTeam = sharedPrefid.getString("selectedteam", "");
         savedUsername = sharedPrefid.getString("username", "");
         savedDeviceUUID = sharedPref.getString("deviceUUID", "");
         this.mContext = context;
-        executor = Executors.newFixedThreadPool(3);
+        executor = Executors.newFixedThreadPool(2);
     }
 
     private void showToast(String message) {
@@ -76,6 +82,11 @@ public class FuseDataHandler {
                 if (locationResult != null) {
                     for (Location location : locationResult.getLocations()) {
                         if (location != null) {
+                            long timestamp = System.currentTimeMillis(); // assuming this is your timestamp
+                            Date date = new Date(timestamp); // convert timestamp to Date object
+
+                            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // create date format
+                            dateString = dateFormat.format(date);
                             mLocation = location;
                             sendGPSData(location);
                             showToast("success"+mLocation.getLatitude()+mLocation.getLongitude());
@@ -120,7 +131,7 @@ public class FuseDataHandler {
     }
 
     public void sendGPSData(Location location) {
-        String data = String.format("{\"DeviceUUID\": \"%s\", \"Username\": \"%s\", \"Latitude\": %s, \"Longitude\": %s, \"Altitude\": \"%s\", \"Accuracy\": \"%s\", \"Speed\": \"%s\", \"Bearing\": \"%s\"}", savedDeviceUUID,savedUsername, location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getAccuracy(), location.getSpeed(), location.getBearing());
+        String data = String.format("{\"TimeStamp\":\"%s\", \"DeviceUUID\": \"%s\", \"Username\": \"%s\",\"TeamType\": \"%s\", \"Latitude\": %s, \"Longitude\": %s, \"Altitude\": %s, \"Accuracy\": %s, \"Speed\": %s, \"Bearing\": %s}", dateString,savedDeviceUUID,savedUsername,savedTeam, location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getAccuracy(), location.getSpeed(), location.getBearing());
         Log.d(TAG, data);
         executor.execute(new Runnable() {
             @Override
@@ -132,17 +143,20 @@ public class FuseDataHandler {
                     connection.setRequestMethod("POST");
                     connection.setDoOutput(true);
                     connection.setDoInput(true);
+                    connection.setConnectTimeout(5000);
+                    connection.setReadTimeout(5000);
                     connection.setRequestProperty("Content-Type", "application/json");
                     connection.setRequestProperty("Accept", "application/json");
                     OutputStream os = connection.getOutputStream();
                     os.write(data.getBytes());
                     os.flush();
-                    os.close();
-                    InputStream is = connection.getInputStream();
-                    StringWriter writer = new StringWriter();
-                    //IOUtils.copy(is, writer, "UTF-8");
-                    String response = writer.toString();
-                    Log.d(TAG, response);
+
+
+                   InputStream is = connection.getInputStream();
+//                    StringWriter writer = new StringWriter();
+//                    //IOUtils.copy(is, writer, "UTF-8");
+//                    String response = writer.toString();
+//                    Log.d(TAG, response);
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
