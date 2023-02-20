@@ -57,7 +57,7 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
                 conn.setReadTimeout(5000);
                 // 发送data
                 StringWriter stringWriter = new StringWriter();
-                stringWriter.write(String.format("{\"DeviceUUID\": \"%s\", \"Username\": \"%s\", \"TeamType\": %s, \"WifiList\": ",savedDeviceUUID,savedUsername,selectedteam));
+                stringWriter.write(String.format("{\"DeviceUUID\": \"%s\", \"Username\": \"%s\", \"TeamType\": \"%s\", \"WifiList\": ",savedDeviceUUID,savedUsername,selectedteam));
                 for (ScanResult result : lists[0]) {
                     if (result.level > -67) {
                         //Log.d(TAG, String.format("\"SSID\": \"%s\", \"BSSID\": \"%s\", \"level\": %d ", result.SSID, result.BSSID, result.level));

@@ -34,8 +34,16 @@ public class GPSDataHandler {
     private String savedDeviceUUID;
     private String savedUsername;
     private String selectedteam;
+    private String savedTeam;
+    
     public GPSDataHandler(LocationManager locationManager, Context context) {
         mContext = context;
+        SharedPreferences sharedPref = context.getSharedPreferences("MAIN_DATA", MODE_PRIVATE);
+        SharedPreferences sharedPrefid = context.getSharedPreferences("button_state", MODE_PRIVATE);
+        int selectedButtonId = sharedPrefid.getInt("selected_button_id", -1);
+        savedTeam = sharedPrefid.getString("selectedteam", "");
+        savedUsername = sharedPrefid.getString("username", "");
+        savedDeviceUUID = sharedPref.getString("deviceUUID", "");
 
         this.mlocationManager = locationManager;
         this.mContext = context;
@@ -96,12 +104,11 @@ public class GPSDataHandler {
                     os.write(data.getBytes());
                     os.flush();
                     os.close();
-//                    InputStream is = connection.getInputStream();
+                    InputStream is = connection.getInputStream();
 //                    StringWriter writer = new StringWriter();
-//                   IOUtils.copy(is, writer, "UTF-8");
+//                    //IOUtils.copy(is, writer, "UTF-8");
 //                    String response = writer.toString();
-//
-//                    Log.d(TAG, "12"+response);
+//                    Log.d(TAG, response);
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
