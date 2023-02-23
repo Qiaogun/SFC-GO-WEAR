@@ -35,7 +35,7 @@ public class TeamSelect extends Activity {
             String selectedteam = sharedPref.getString("selectedteam", "");
             String savedUsername = sharedPref.getString("username","");
             usernameInput.setText(savedUsername);
-            Log.d("MyTagsave", savedUsername);
+            //Log.d("MyTagsave", savedUsername);
             if (selectedteam == "Green") {
                 mButton1.setSelected(true);
                 mSelectedteam ="Green";
@@ -94,7 +94,7 @@ public class TeamSelect extends Activity {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("username", content);
         editor.putString("selectedteam", mSelectedteam);
-        Log.d("MyTag", content);
+        //Log.d("MyTag", content);
         editor.apply();
         }
         private void saveSelectedButtonId(int buttonId) {

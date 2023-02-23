@@ -49,7 +49,7 @@ public class SensorDataHandler implements SensorEventListener {
         mSensorHR = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
         mSensorLIGHT = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         mSensorSKINTEMP = mSensorManager.getDefaultSensor(69686);
-        executor = Executors.newFixedThreadPool(1);
+        executor = Executors.newFixedThreadPool(3);
     }
 
     public void start() {

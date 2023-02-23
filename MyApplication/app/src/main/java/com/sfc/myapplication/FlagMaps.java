@@ -52,7 +52,7 @@ public class FlagMaps extends FragmentActivity implements OnMapReadyCallback {
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
-        Log.d("missmap", "地图权限1");
+//        Log.d("missmap", "地图权限1");
     }
 
     @Override

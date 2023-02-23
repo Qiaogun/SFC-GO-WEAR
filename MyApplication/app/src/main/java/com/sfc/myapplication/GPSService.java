@@ -65,7 +65,7 @@ public class GPSService extends Service {
                     stringWriter.write(String.format("\"Latitude\": %s, \"Longitude\": %s}\n",String.valueOf(latitude),String.valueOf(longitude)));
                     //stringWriter.write(String.format("\"Latitude\": %.7f, \"Longitude\": %.7f   }\n",latitude,longitude));
 
-                    Log.d(TAG,stringWriter.toString());
+                    //Log.d(TAG,stringWriter.toString());
                     byte[] data = stringWriter.toString().getBytes("utf-8");
                     conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                     conn.setRequestProperty("Content-Length", "" + data.length);

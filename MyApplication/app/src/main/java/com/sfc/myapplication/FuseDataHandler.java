@@ -56,7 +56,7 @@ public class FuseDataHandler {
         savedUsername = sharedPrefid.getString("username", "");
         savedDeviceUUID = sharedPref.getString("deviceUUID", "");
         this.mContext = context;
-        executor = Executors.newFixedThreadPool(1);
+        executor = Executors.newFixedThreadPool(3);
     }
 
     private void showToast(String message) {
@@ -127,13 +127,13 @@ public class FuseDataHandler {
     public void sendGPSData(Location location) {
         String data = String.format("{\"TimeStamp\":\"%s\", \"DeviceUUID\": \"%s\", \"Username\": \"%s\",\"TeamType\": \"%s\", \"Latitude\": %s, \"Longitude\": %s, \"Altitude\": %s, \"Accuracy\": %s, \"Speed\": %s, \"Bearing\": %s}", dateString,savedDeviceUUID,savedUsername,savedTeam, location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getAccuracy(), location.getSpeed(), location.getBearing());
 
-        Log.d(TAG, data);
+        //Log.d(TAG, data);
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-//                    URL url = new URL("http://43.206.213.194:23333/GPS");
-                    URL url = new URL("http://192.168.88.11:23333/GPS");
+                    URL url = new URL("http://43.206.213.194:23333/GPS");
+//                    URL url = new URL("http://192.168.88.11:23333/GPS");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("POST");
                     connection.setDoOutput(true);

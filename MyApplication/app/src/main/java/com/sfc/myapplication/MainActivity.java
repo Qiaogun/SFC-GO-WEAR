@@ -73,13 +73,13 @@ public class MainActivity extends FragmentActivity implements AmbientModeSupport
         wifiScanTask.execute();
 
         deviceUUID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        Log.d("MyTag deviceUUID", deviceUUID);
+        //Log.d("MyTag deviceUUID", deviceUUID);
 
 
         SharedPreferences sharedPref = getSharedPreferences("MAIN_DATA", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("deviceUUID", deviceUUID);
-        Log.d("deviceUUID", deviceUUID);
+        //Log.d("deviceUUID", deviceUUID);
         editor.apply();
 
         String currlatitude = sharedPref.getString("latitude", "");

@@ -48,7 +48,7 @@ public class GPSDataHandler {
 
         this.mlocationManager = locationManager;
         this.mContext = context;
-        executor = Executors.newFixedThreadPool(1);
+        executor = Executors.newFixedThreadPool(2);
     }
     private void showToast(String message) {
         Context context = mContext;

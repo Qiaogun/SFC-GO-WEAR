@@ -45,10 +45,10 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
             ArrayList WiFiresjson = new ArrayList<String>();;
             HttpURLConnection conn = null;
             try {
-                Log.d(TAG, "doInBackground");
+                //Log.d(TAG, "doInBackground");
 
-                URL url = new URL("http://192.168.88.24:23333/WiFi");
-                // URL url = new URL("http://43.206.213.194:23333/WiFi");
+                //URL url = new URL("http://192.168.88.24:23333/WiFi");
+                URL url = new URL("http://43.206.213.194:23333/WiFi");
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
                 conn.setDoOutput(true);
@@ -65,10 +65,10 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
                     }
                 }
                 String res= String.join(",",WiFiresjson);
-                Log.d(TAG,res);
+                //Log.d(TAG,res);
                 stringWriter.write("["+res+"]}");
 
-                Log.d(TAG,stringWriter.toString());
+                //Log.d(TAG,stringWriter.toString());
                 byte[] data = stringWriter.toString().getBytes("utf-8");
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestProperty("Content-Length", "" + data.length);
@@ -77,7 +77,7 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
                 outputStream.write(data);
                 outputStream.close();
 
-                Log.d(TAG, "send final");
+                //Log.d(TAG, "send final");
                 return conn.getResponseCode();
             } catch (MalformedURLException e) {
                 //throw new RuntimeException(e);
@@ -132,7 +132,7 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
 
                     try {
                         new HttpTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, results);
-                        Log.d(TAG, "Scan final");
+                        //Log.d(TAG, "Scan final");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -151,7 +151,7 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... voids) {
         while (isRunning) {
             // 在这里进行WiFi扫描
-            Log.d(TAG, "Scan running");
+            //Log.d(TAG, "Scan running");
             scanWiFi();
             try {
                 Thread.sleep(interval);
@@ -179,7 +179,7 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
 
 
     private void scanWiFi() {
-        Log.d(TAG, "startScan");
+        //Log.d(TAG, "startScan");
         boolean success = wifiManager.startScan();
         if (!success) {
             Log.e(TAG, "startScan error");

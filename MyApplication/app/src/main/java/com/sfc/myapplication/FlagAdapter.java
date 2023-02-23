@@ -47,7 +47,7 @@ public class FlagAdapter extends ArrayAdapter<Flag> {
         }
         else {
 
-            Log.d("flag.getOffset()", String.valueOf(flag.getOffset()));
+            //Log.d("flag.getOffset()", String.valueOf(flag.getOffset()));
             mProgressBar.setProgress((int) (100+flag.getOffset() * 20));
         }
         return view;
