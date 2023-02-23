@@ -1,22 +1,36 @@
 package com.sfc.myapplication;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.sfc.myapplication.databinding.ActivityFlagMapsBinding;
+
+import java.util.List;
 
 public class FlagMaps extends FragmentActivity implements OnMapReadyCallback {
     Marker mCurrLocationMarker;
@@ -24,19 +38,21 @@ public class FlagMaps extends FragmentActivity implements OnMapReadyCallback {
     GoogleMap mGoogleMap;
     LocationRequest mLocationRequest;
     FusedLocationProviderClient mFusedLocationClient;
+    SupportMapFragment mapFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         ActivityFlagMapsBinding binding = ActivityFlagMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
-        Log.d("missmap","地图权限1");
+        Log.d("missmap", "地图权限1");
     }
 
     @Override
@@ -97,6 +113,14 @@ public class FlagMaps extends FragmentActivity implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
+        mGoogleMap = googleMap;
+        //mGoogleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
+            return;
+        }
+        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+        mGoogleMap.setMyLocationEnabled(true);
 //        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 //        mLocationRequest = new LocationRequest();
 //        mLocationRequest.setInterval(120000); // two minute interval
@@ -122,17 +146,63 @@ public class FlagMaps extends FragmentActivity implements OnMapReadyCallback {
 //            mGoogleMap.setMyLocationEnabled(true);
 //        }
 //        // Add a marker in SFC and move the camera,
-
-        googleMap.addMarker(new MarkerOptions().position(Mubuliding).title("Mubuliding"));
-        googleMap.addMarker(new MarkerOptions().position(Tennis).title("Tennis"));
-        googleMap.addMarker(new MarkerOptions().position(Kamoike).title("Kamoike"));
-        googleMap.addMarker(new MarkerOptions().position(Delta).title("Delta"));
-        googleMap.addMarker(new MarkerOptions().position(yukichi).title("yukichi"));
+        // Define a BitmapDescriptor object for the marker's icon
+        BitmapDescriptor duckicon = BitmapDescriptorFactory.fromResource(R.drawable.duck);
+        BitmapDescriptor monitoricon = BitmapDescriptorFactory.fromResource(R.drawable.monitor);
+        BitmapDescriptor statueicon = BitmapDescriptorFactory.fromResource(R.drawable.yukichi);
+        BitmapDescriptor tennis_ballicon = BitmapDescriptorFactory.fromResource(R.drawable.tennis);
+        BitmapDescriptor libraryicon = BitmapDescriptorFactory.fromResource(R.drawable.books);
+        // Add the marker to the map
+        googleMap.addMarker(new MarkerOptions().icon(duckicon).position(Kamoike).title("Kamoike"));
+        googleMap.addMarker(new MarkerOptions().icon(libraryicon).position(Mubuliding).title("Mubuliding"));
+        googleMap.addMarker(new MarkerOptions().icon(tennis_ballicon).position(Tennis).title("Tennis"));
+//        googleMap.addMarker(new MarkerOptions().position(Kamoike).title("Kamoike"));
+        googleMap.addMarker(new MarkerOptions().icon(monitoricon).position(Delta).title("Delta"));
+        googleMap.addMarker(new MarkerOptions().icon(statueicon).position(yukichi).title("yukichi"));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(SFC));
 
         CameraUpdate cUpdate = CameraUpdateFactory.newLatLngZoom(
-                Mubuliding, 14);
+                Mubuliding, 16);
         googleMap.moveCamera(cUpdate);
+
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
+            return;
+        }
+            mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+            mGoogleMap.setMyLocationEnabled(true);
+    }
+
+    LocationCallback mLocationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            List<Location> locationList = locationResult.getLocations();
+            if (locationList.size() > 0) {
+                //The last location in the list is the newest
+                Location location = locationList.get(locationList.size() - 1);
+                Log.i("MapsActivity", "Location: " + location.getLatitude() + " " + location.getLongitude());
+                mLastLocation = location;
+                if (mCurrLocationMarker != null) {
+                    mCurrLocationMarker.remove();
+                }
+
+                //Place current location marker
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(latLng);
+                markerOptions.title("Current Position");
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+                mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
+
+                //move map camera
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+            }
+        }
+    };
 }

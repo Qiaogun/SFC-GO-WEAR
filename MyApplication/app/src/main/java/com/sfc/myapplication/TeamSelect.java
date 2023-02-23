@@ -50,7 +50,7 @@ public class TeamSelect extends Activity {
             }
 
             mButton1.setOnClickListener(view -> {
-                if (selectedteam == "Green") {
+                if (mButton1.isSelected()==true) {
                     // If button 1 is already selected, reset to initial state
                     mSelectedButtonId = -1;
                     mButton1.setSelected(false);
@@ -69,7 +69,7 @@ public class TeamSelect extends Activity {
             });
 
             mButton2.setOnClickListener(view -> {
-                if (selectedteam == "Red") {
+                if (mButton2.isSelected()==true) {
                     // If button 2 is already selected, reset to initial state
                     mSelectedButtonId = -1;
                     mSelectedteam ="";

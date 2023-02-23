@@ -56,7 +56,7 @@ public class FuseDataHandler {
         savedUsername = sharedPrefid.getString("username", "");
         savedDeviceUUID = sharedPref.getString("deviceUUID", "");
         this.mContext = context;
-        executor = Executors.newFixedThreadPool(2);
+        executor = Executors.newFixedThreadPool(1);
     }
 
     private void showToast(String message) {
@@ -80,8 +80,9 @@ public class FuseDataHandler {
                             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // create date format
                             dateString = dateFormat.format(date);
                             mLocation = location;
-                            sendGPSData(location);
-                            //showToast("success"+mLocation.getLatitude()+mLocation.getLongitude());
+                            sendGPSData(mLocation);
+                            //showToast("GPS Updated");
+//                            showToast(""+mLocation.getLatitude()+mLocation.getLongitude());
 
                         }
                     }
@@ -107,6 +108,7 @@ public class FuseDataHandler {
                     @Override
                     public void onSuccess(Void aVoid) {
                         // TODO: 接口调用成功的处理
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -124,13 +126,14 @@ public class FuseDataHandler {
 
     public void sendGPSData(Location location) {
         String data = String.format("{\"TimeStamp\":\"%s\", \"DeviceUUID\": \"%s\", \"Username\": \"%s\",\"TeamType\": \"%s\", \"Latitude\": %s, \"Longitude\": %s, \"Altitude\": %s, \"Accuracy\": %s, \"Speed\": %s, \"Bearing\": %s}", dateString,savedDeviceUUID,savedUsername,savedTeam, location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getAccuracy(), location.getSpeed(), location.getBearing());
+
         Log.d(TAG, data);
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
 //                    URL url = new URL("http://43.206.213.194:23333/GPS");
-                    URL url = new URL("http://192.168.88.24:23333/GPS");
+                    URL url = new URL("http://192.168.88.11:23333/GPS");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("POST");
                     connection.setDoOutput(true);
@@ -144,14 +147,15 @@ public class FuseDataHandler {
                     os.flush();
                     os.close();
                     InputStream is = connection.getInputStream();
+
 //                    StringWriter writer = new StringWriter();
 //                    //IOUtils.copy(is, writer, "UTF-8");
 //                    String response = writer.toString();
 //                    Log.d(TAG, response);
                 } catch (MalformedURLException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
             }
         });

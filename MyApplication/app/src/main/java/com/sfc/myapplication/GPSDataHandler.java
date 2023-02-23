@@ -84,7 +84,7 @@ public class GPSDataHandler {
         savedDeviceUUID = sharedPref.getString("deviceUUID", "");
         selectedteam = sharedPrefid.getString("selectedteam", "");
         String data = String.format("{\"DeviceUUID\": \"%s\", \"Username\": \"%s\", \"TeamType\":\"%s\", \"Latitude\": %s, \"Longitude\": %s, \"Altitude\": \"%s\", \"Accuracy\": \"%s\", \"Speed\": \"%s\", \"Bearing\": \"%s\"}", savedDeviceUUID,savedUsername,selectedteam, location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getAccuracy(), location.getSpeed(), location.getBearing());
-        Log.d(TAG, data);
+        //Log.d(TAG, data);
 
         executor.execute(new Runnable() {
             @Override
@@ -111,9 +111,9 @@ public class GPSDataHandler {
 //                    String response = writer.toString();
 //                    Log.d(TAG, response);
                 } catch (MalformedURLException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
             }
         });
