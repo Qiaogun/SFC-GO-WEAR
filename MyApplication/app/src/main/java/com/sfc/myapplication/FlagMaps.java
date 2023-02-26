@@ -104,10 +104,10 @@ public class FlagMaps extends FragmentActivity implements OnMapReadyCallback {
      * installed Google Play services and returned to the app.
      */
     private static final LatLng Mubuliding = new LatLng(35.38816829902916, 139.42723399013175);
-    private static final LatLng Tennis = new LatLng(35.386891, 139.429435);
-    private static final LatLng Kamoike = new LatLng(35.387112, 139.42727);
+    private static final LatLng Tennis = new LatLng(35.38696386572878, 139.42914485995647);
+    private static final LatLng Kamoike = new LatLng(35.38699229459216, 139.42786035980842);
     private static final LatLng Delta = new LatLng(35.38824956525928, 139.42541544170638);
-    private static final LatLng yukichi = new LatLng(35.38848434126174, 139.42701446346757);
+    private static final LatLng yukichi = new LatLng(35.38848308563938, 139.42698890503902);
 
 
     @Override
@@ -156,7 +156,6 @@ public class FlagMaps extends FragmentActivity implements OnMapReadyCallback {
         googleMap.addMarker(new MarkerOptions().icon(duckicon).position(Kamoike).title("Kamoike"));
         googleMap.addMarker(new MarkerOptions().icon(libraryicon).position(Mubuliding).title("Mubuliding"));
         googleMap.addMarker(new MarkerOptions().icon(tennis_ballicon).position(Tennis).title("Tennis"));
-//        googleMap.addMarker(new MarkerOptions().position(Kamoike).title("Kamoike"));
         googleMap.addMarker(new MarkerOptions().icon(monitoricon).position(Delta).title("Delta"));
         googleMap.addMarker(new MarkerOptions().icon(statueicon).position(yukichi).title("yukichi"));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(SFC));
