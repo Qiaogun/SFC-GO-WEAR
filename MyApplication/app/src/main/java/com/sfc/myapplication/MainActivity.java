@@ -168,12 +168,12 @@ public class MainActivity extends FragmentActivity implements AmbientModeSupport
     @Override
     protected void onPause() {
         super.onPause();
-        mSensorDataHandler.stop();
+        //mSensorDataHandler.stop();
     }
     @Override
     protected void onResume() {
         super.onResume();
-        mSensorDataHandler.start();
+        //mSensorDataHandler.start();
     }
     ;
 

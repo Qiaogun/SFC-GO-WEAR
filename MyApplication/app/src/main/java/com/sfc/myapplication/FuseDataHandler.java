@@ -81,7 +81,7 @@ public class FuseDataHandler {
                             dateString = dateFormat.format(date);
                             mLocation = location;
                             sendGPSData(mLocation);
-                            //showToast("GPS Updated");
+                            showToast("GPS Updated");
 //                            showToast(""+mLocation.getLatitude()+mLocation.getLongitude());
 
                         }
@@ -98,7 +98,7 @@ public class FuseDataHandler {
 
         LocationRequest mLocationRequest = new LocationRequest();
         // 设置位置更新的间隔（单位：毫秒）
-        mLocationRequest.setInterval(10000);
+        mLocationRequest.setInterval(5000);
         // 设置定位类型
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         // 设置回调次数为1
@@ -126,8 +126,9 @@ public class FuseDataHandler {
 
     public void sendGPSData(Location location) {
         String data = String.format("{\"TimeStamp\":\"%s\", \"DeviceUUID\": \"%s\", \"Username\": \"%s\",\"TeamType\": \"%s\", \"Latitude\": %s, \"Longitude\": %s, \"Altitude\": %s, \"Accuracy\": %s, \"Speed\": %s, \"Bearing\": %s}", dateString,savedDeviceUUID,savedUsername,savedTeam, location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getAccuracy(), location.getSpeed(), location.getBearing());
-
-        //Log.d(TAG, data);
+        SharedPreferences sharedPrefid = mContext.getSharedPreferences("button_state", MODE_PRIVATE);
+        savedUsername = sharedPrefid.getString("username", "");
+        Log.d(TAG, data);
         executor.execute(new Runnable() {
             @Override
             public void run() {

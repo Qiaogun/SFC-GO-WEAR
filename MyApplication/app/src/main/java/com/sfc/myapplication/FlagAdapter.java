@@ -40,15 +40,15 @@ public class FlagAdapter extends ArrayAdapter<Flag> {
         flagimage.setImageResource(flag.getID());
         flagname.setText(flag.getName());
         mProgressBar.setVisibility(View.VISIBLE);
-        mProgressBar.setMax(200);  // Set the maximum progress value
+        mProgressBar.setMax(60);  // Set the maximum progress value
         if (flag.getOffset() == 0) {
-            mProgressBar.setProgress(100);
+            mProgressBar.setProgress(30);
             //mProgressBar.setSecondaryProgress(50);
         }
         else {
 
             //Log.d("flag.getOffset()", String.valueOf(flag.getOffset()));
-            mProgressBar.setProgress((int) (100+flag.getOffset() * 20));
+            mProgressBar.setProgress((int) (30+flag.getOffset()));
         }
         return view;
     }

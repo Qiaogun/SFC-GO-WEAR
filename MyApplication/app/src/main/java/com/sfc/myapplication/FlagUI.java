@@ -52,11 +52,11 @@ class Point {
     }
 
     public double getStaus(){
-        if  (-5 < this.offset && this.offset < 5 && this.offset!=0){
+        if  (-30 < this.offset && this.offset < 30 && this.offset!=0){
                 return 1;
-        } else if (this.offset == -5) {
+        } else if (this.offset == -30) {
             return 2;
-        } else if (this.offset == 5) {
+        } else if (this.offset == 30) {
             return  3;
         }
         return 0;
