@@ -122,7 +122,7 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
                         WifiManager.EXTRA_RESULTS_UPDATED, false);
                 if (success) {
                     //Log.d(TAG, "Scan success");
-                    showToast("WiFi Scan success");
+                    //showToast("WiFi Scan success");
                     List<ScanResult> results = wifiManager.getScanResults();
 //                    for (ScanResult scanResult : results) {
 //                        if (scanResult.level > -67) {
