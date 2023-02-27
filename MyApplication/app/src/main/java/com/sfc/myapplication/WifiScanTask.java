@@ -37,11 +37,15 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Integer doInBackground(List<ScanResult>... lists) {
+            SharedPreferences sharedPrefGPS = context.getSharedPreferences("GPS_DATA", MODE_PRIVATE);
             SharedPreferences sharedPref = context.getSharedPreferences("MAIN_DATA", MODE_PRIVATE);
             SharedPreferences sharedPrefid = context.getSharedPreferences("button_state", MODE_PRIVATE);
             String savedUsername = sharedPrefid.getString("username","");
             String selectedteam = sharedPrefid.getString("selectedteam","");
-            String savedDeviceUUID = sharedPref.getString("deviceUUID","");
+            String savedDeviceUUID = sharedPrefGPS.getString("deviceUUID","");
+            String savedLatitude = sharedPrefGPS.getString("location_Latitude","");
+            String savedLongitude = sharedPrefGPS.getString("location_Longitude","");
+
             ArrayList WiFiresjson = new ArrayList<String>();;
             HttpURLConnection conn = null;
             try {
@@ -53,11 +57,11 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
                 conn.setRequestMethod("POST");
                 conn.setDoOutput(true);
                 conn.setUseCaches(false);
-                conn.setConnectTimeout(5000);
-                conn.setReadTimeout(5000);
+                conn.setConnectTimeout(10000);
+                conn.setReadTimeout(10000);
                 // 发送data
                 StringWriter stringWriter = new StringWriter();
-                stringWriter.write(String.format("{\"DeviceUUID\": \"%s\", \"Username\": \"%s\", \"TeamType\": \"%s\", \"WifiList\": ",savedDeviceUUID,savedUsername,selectedteam));
+                stringWriter.write(String.format("{\"DeviceUUID\": \"%s\", \"Username\": \"%s\", \"TeamType\": \"%s\",\"Latitude\"：%s, \"Longitude\"：%s, \"WifiList\": ",savedDeviceUUID,savedUsername,selectedteam,savedLatitude,savedLongitude));
                 for (ScanResult result : lists[0]) {
                     if (result.level > -67) {
                         //Log.d(TAG, String.format("\"SSID\": \"%s\", \"BSSID\": \"%s\", \"level\": %d ", result.SSID, result.BSSID, result.level));

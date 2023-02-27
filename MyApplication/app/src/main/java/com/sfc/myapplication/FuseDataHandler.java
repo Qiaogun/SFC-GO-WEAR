@@ -125,6 +125,9 @@ public class FuseDataHandler {
     }
 
     public void sendGPSData(Location location) {
+        SharedPreferences sharedPrefGPS = mContext.getSharedPreferences("GPS_DATA", MODE_PRIVATE);
+        sharedPrefGPS.edit().putString("location_Longitude", String.valueOf(location.getLongitude())).apply();
+        sharedPrefGPS.edit().putString("location_Latitude", String.valueOf(location.getLatitude())).apply();
         String data = String.format("{\"TimeStamp\":\"%s\", \"DeviceUUID\": \"%s\", \"Username\": \"%s\",\"TeamType\": \"%s\", \"Latitude\": %s, \"Longitude\": %s, \"Altitude\": %s, \"Accuracy\": %s, \"Speed\": %s, \"Bearing\": %s}", dateString,savedDeviceUUID,savedUsername,savedTeam, location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getAccuracy(), location.getSpeed(), location.getBearing());
         SharedPreferences sharedPrefid = mContext.getSharedPreferences("button_state", MODE_PRIVATE);
         savedUsername = sharedPrefid.getString("username", "");

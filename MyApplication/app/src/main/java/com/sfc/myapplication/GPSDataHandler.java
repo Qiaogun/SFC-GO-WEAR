@@ -36,6 +36,8 @@ public class GPSDataHandler {
     private String savedUsername;
     private String selectedteam;
     private String savedTeam;
+    private String location_Longitude;
+    private String location_Latitude;
     
     public GPSDataHandler(LocationManager locationManager, Context context) {
         mContext = context;
