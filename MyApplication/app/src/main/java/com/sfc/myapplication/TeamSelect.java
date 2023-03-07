@@ -39,13 +39,13 @@ public class TeamSelect extends Activity {
             if (selectedteam == "Green") {
                 mButton1.setSelected(true);
                 mSelectedteam ="Green";
-                mButton1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.lime_green)));
+                mButton1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
                 showToast("Green Team");
             } 
             else if (selectedteam == "Red") {
                 mButton2.setSelected(true);
                 mSelectedteam ="Red";
-                mButton2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.light_red)));
+                mButton2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.yellow)));
                 showToast("Red Team");
             }
 
@@ -60,9 +60,9 @@ public class TeamSelect extends Activity {
                     // Otherwise, select button 1 and unselect the other button
                     mSelectedButtonId = R.id.button_green;
                     mButton1.setSelected(true);
-                    mButton1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.lime_green)));
+                    mButton1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
                     mSelectedteam ="Green";
-                    showToast("Green Team set");
+                    showToast("Blue Team set");
                     mButton2.setSelected(false);
                     mButton2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.gary)));
                 }
@@ -79,10 +79,10 @@ public class TeamSelect extends Activity {
                     // Otherwise, select button 2 and unselect the other button
                     mSelectedButtonId = R.id.button_red;
                     mButton2.setSelected(true);
-                    mButton2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.light_red)));
+                    mButton2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.yellow)));
                     mButton1.setSelected(false);
                     mSelectedteam ="Red";
-                    showToast("Red Team set");
+                    showToast("Yellow Team set");
                     mButton1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.gary)));
                 }
             });

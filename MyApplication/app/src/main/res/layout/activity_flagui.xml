@@ -21,7 +21,7 @@
         android:id="@+id/textView2"
         android:layout_width="167dp"
         android:layout_height="30dp"
-        android:text="Red  0 - 0 Green"
+        android:text="Blue  0 - 0 Yellow"
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="10dp"
