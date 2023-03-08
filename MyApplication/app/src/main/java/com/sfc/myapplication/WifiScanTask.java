@@ -32,6 +32,11 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
     private static final String TAG = "WifiScanTask";
     Context mcontext;
 
+    private static String savedUsername;
+    private static String selectedteam;
+    private static String savedDeviceUUID;
+    private static String savedLatitude;
+    private static String savedLongitude;
 
     static class HttpTask extends AsyncTask<List<ScanResult>, Void, Integer> {
 
@@ -40,17 +45,17 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
             SharedPreferences sharedPrefGPS = context.getSharedPreferences("GPS_DATA", MODE_PRIVATE);
             SharedPreferences sharedPref = context.getSharedPreferences("MAIN_DATA", MODE_PRIVATE);
             SharedPreferences sharedPrefid = context.getSharedPreferences("button_state", MODE_PRIVATE);
-            String savedUsername = sharedPrefid.getString("username","");
-            String selectedteam = sharedPrefid.getString("selectedteam","");
-            String savedDeviceUUID = sharedPrefGPS.getString("deviceUUID","");
-            String savedLatitude = sharedPrefGPS.getString("location_Latitude","");
-            String savedLongitude = sharedPrefGPS.getString("location_Longitude","");
+            savedDeviceUUID = sharedPrefGPS.getString("deviceUUID","");
+
 
             ArrayList WiFiresjson = new ArrayList<String>();;
             HttpURLConnection conn = null;
             try {
                 //Log.d(TAG, "doInBackground");
-
+                savedUsername = sharedPrefid.getString("username","");
+                selectedteam = sharedPrefid.getString("selectedteam","");
+                savedLatitude = sharedPrefGPS.getString("location_Latitude","");
+                savedLongitude = sharedPrefGPS.getString("location_Longitude","");
                 //URL url = new URL("http://192.168.88.24:23333/WiFi");
                 URL url = new URL("http://43.206.213.194:23333/WiFi");
                 conn = (HttpURLConnection) url.openConnection();
@@ -63,7 +68,7 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
                 StringWriter stringWriter = new StringWriter();
                 stringWriter.write(String.format("{\"DeviceUUID\": \"%s\", \"Username\": \"%s\", \"TeamType\": \"%s\",\"Latitude\"：%s, \"Longitude\"：%s, \"WifiList\": ",savedDeviceUUID,savedUsername,selectedteam,savedLatitude,savedLongitude));
                 for (ScanResult result : lists[0]) {
-                    if (result.level > -67) {
+                    if (result.SSID != null) {
                         //Log.d(TAG, String.format("\"SSID\": \"%s\", \"BSSID\": \"%s\", \"level\": %d ", result.SSID, result.BSSID, result.level));
                         WiFiresjson.add(String.format("{"+"\"SSID\": \"%s\", \"BSSID\": \"%s\", \"Level\": %d }", result.SSID, result.BSSID, result.level));
                     }
@@ -72,7 +77,7 @@ public class WifiScanTask extends AsyncTask<Void, Void, Void> {
                 //Log.d(TAG,res);
                 stringWriter.write("["+res+"]}");
 
-                //Log.d(TAG,stringWriter.toString());
+                Log.d(TAG,stringWriter.toString());
                 byte[] data = stringWriter.toString().getBytes("utf-8");
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestProperty("Content-Length", "" + data.length);
